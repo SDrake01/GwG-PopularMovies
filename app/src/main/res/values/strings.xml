@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Movie Hub</string>
+    <string name="app_settings">Settings</string>
+    <string name="release_date">Release Date: %1$s</string>
+    <string name="default_sort">popular</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_header_filters">Movie filters</string>
+    <string name="title_filters">Filter By:</string>
+    <string name="release_label">Release Date:</string>
+    <string name="reviews">Read The\nReviews</string>
+    <string name="trailers">Watch The\nTrailers</string>
+    <string name="favorites">Add To\nFavorites</string>
+    <string name="removeFavs">Remove From\nFavorites</string>
+    <string name="api_key">API Key</string>
+    <string name="pref_api_default">Enter your API Key</string>
+    <string name="movie_trailers">Movie Trailers</string>
+    <string name="movie_reviews">Movie Reviews</string>
+    <string name="movie_details">Movie Details</string>
+</resources>
