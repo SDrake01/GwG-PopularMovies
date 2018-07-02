@@ -17,6 +17,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.stevendrake.moviehub.RoomDatabase.FilmDao;
+import com.stevendrake.moviehub.RoomDatabase.FilmDatabase;
+
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -30,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     // it will be replaced by the database length when it is included so the app will work offline
     private static final int TEST_LIST_LENGTH = 20;
     private MovieAdapter movieGridAdapter;
+
+    // Initialize the database and its members
+    FilmDatabase filmDatabase = FilmDatabase.getDatabase(this);
+    private FilmDao filmDao = filmDatabase.filmDao();
 
     // Create an instance of SharedPreferences and PreferenceChangeListener
     SharedPreferences prefs;
