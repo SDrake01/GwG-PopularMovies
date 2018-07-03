@@ -48,7 +48,7 @@ final class MovieJson {
         String backdropUrl = "https://image.tmdb.org/t/p/w780";
 
         // Create an instance of Film to add to the database
-        Film filmBuilder;
+        Film filmBuilder = new Film();
         FilmDao filmDao = null;
 
         // Iterate through the json array to build the object and pass it into the database
@@ -56,28 +56,29 @@ final class MovieJson {
         if (fullArray != null){
             for (int i = 0; i < fullArray.length(); i++){
                 JSONObject jsonFilmData = fullArray.getJSONObject(i);
-                filmBuilder = new Film(
-                        jsonFilmData.getString("id"),
-                        jsonFilmData.getString("title"),
-                        jsonFilmData.getLong("vote_average"),
-                        jsonFilmData.getLong("popularity"),
-                        jsonFilmData.getString("overview"),
-                        jsonFilmData.getString("poster_path"),
-                        jsonFilmData.getString("backdrop_path"),
-                        jsonFilmData.getString("release_date"),
-                        sortBy);
+//                filmBuilder = new Film(
+//                        jsonFilmData.getString("id"),
+//                        jsonFilmData.getString("title"),
+//                        jsonFilmData.getLong("vote_average"),
+//                        jsonFilmData.getLong("popularity"),
+//                        jsonFilmData.getString("overview"),
+//                        jsonFilmData.getString("poster_path"),
+//                        jsonFilmData.getString("backdrop_path"),
+//                        jsonFilmData.getString("release_date"),
+//                        sortBy);
 
-//                filmBuilder.setId(jsonFilmData.getString("id"));
-//                filmBuilder.setTitle(jsonFilmData.getString("title"));
-//                filmBuilder.setRating(jsonFilmData.getLong("vote_average"));
-//                filmBuilder.setPopularity(jsonFilmData.getLong("popularity"));
-//                filmBuilder.setDescription(jsonFilmData.getString("overview"));
-//                filmBuilder.setPoster(jsonFilmData.getString("poster_path"));
-//                filmBuilder.setBackdrop(jsonFilmData.getString("backdrop_path"));
-//                filmBuilder.setReleased(jsonFilmData.getString("release_date"));
-//                filmBuilder.setSort(sortBy);
-//
+                filmBuilder.setId(jsonFilmData.getString("id"));
+                filmBuilder.setTitle(jsonFilmData.getString("title"));
+                filmBuilder.setRating(jsonFilmData.getLong("vote_average"));
+                filmBuilder.setPopularity(jsonFilmData.getLong("popularity"));
+                filmBuilder.setDescription(jsonFilmData.getString("overview"));
+                filmBuilder.setPoster(jsonFilmData.getString("poster_path"));
+                filmBuilder.setBackdrop(jsonFilmData.getString("backdrop_path"));
+                filmBuilder.setReleased(jsonFilmData.getString("release_date"));
+                filmBuilder.setSort(sortBy);
                 filmDao.insert(filmBuilder);
+
+//                filmDao.insert(filmBuilder);
             }
         }
 

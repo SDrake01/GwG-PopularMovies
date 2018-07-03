@@ -1,6 +1,7 @@
 package com.stevendrake.moviehub;
 
 import android.app.ProgressDialog;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.stevendrake.moviehub.RoomDatabase.FilmDao;
 import com.stevendrake.moviehub.RoomDatabase.FilmDatabase;
 
 import org.json.JSONException;
@@ -35,8 +35,21 @@ public class MainActivity extends AppCompatActivity {
     private MovieAdapter movieGridAdapter;
 
     // Initialize the database and its members
-    FilmDatabase filmDatabase = FilmDatabase.getDatabase(this);
-    private FilmDao filmDao = filmDatabase.filmDao();
+    private static FilmDatabase INSTANCE;
+    public static FilmDatabase getDatabase(final Context context){
+        if (INSTANCE == null){
+            synchronized (FilmDatabase.class){
+                if (INSTANCE == null){
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                            FilmDatabase.class, "film_database")
+                            .fallbackToDestructiveMigration()
+                            .build();
+                }
+            }
+        }
+
+        return INSTANCE;
+    }
 
     // Create an instance of SharedPreferences and PreferenceChangeListener
     SharedPreferences prefs;
@@ -104,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
     public class getMovieRawJson extends AsyncTask<String, Void, String> {
 
         // Create a progress spinner for the onPreExecute method
-        ProgressDialog spinner;
+        ProgressDialog spinner = new ProgressDialog(MainActivity.this);
         @Override
         protected void onPreExecute(){
-            spinner = new ProgressDialog(MainActivity.this);
+            //spinner = new ProgressDialog();
             spinner.setTitle("Please wait...");
             spinner.setMessage("Loading movie data");
             spinner.setCancelable(false);

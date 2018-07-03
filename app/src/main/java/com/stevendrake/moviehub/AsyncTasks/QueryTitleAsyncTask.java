@@ -14,15 +14,15 @@ public class QueryTitleAsyncTask {
     public static class getOneTitleTask extends AsyncTask<String, Void, String>{
 
         private FilmDao asyncTaskDao;
-        getOneTitleTask(FilmDao dao){
-            asyncTaskDao = dao;
-        }
+//        public getOneTitleTask(FilmDao dao){
+//            asyncTaskDao = dao;
+//        }
 
         @Override
         protected String doInBackground(String... params){
 
             // Create a variable to pass the returned movie title to the requesting method
-            String queryMovieTitle;
+            String queryMovieTitle = "testing";
 
             // Run the getTitle query from FilmDao using the passed in movie id string
             queryMovieTitle = asyncTaskDao.getTitle(params[0]);

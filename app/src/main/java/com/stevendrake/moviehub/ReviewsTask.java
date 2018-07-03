@@ -49,7 +49,7 @@ public class ReviewsTask {
         }
 
         protected void onPostExecute(String results){
-            MovieData.setTestingString(results);
+            //MovieData.setTestingString(results);
         }
     }
 }

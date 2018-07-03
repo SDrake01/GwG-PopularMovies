@@ -23,25 +23,7 @@ public class Film {
     private String released;
     private String sort;
 
-    public Film(
-            String id,
-            String title,
-            Long rating,
-            Long popularity,
-            String description,
-            String poster,
-            String backdrop,
-            String released,
-            String sort){
-        this.id = id;
-        this.title = title;
-        this.rating = rating;
-        this.popularity = popularity;
-        this.description = description;
-        this.poster = poster;
-        this.backdrop = backdrop;
-        this.released = released;
-        this.sort = sort;
+    public Film(){
     }
 
     public String getId(){return id;}
