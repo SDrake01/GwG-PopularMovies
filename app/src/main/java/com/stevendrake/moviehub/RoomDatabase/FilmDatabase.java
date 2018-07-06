@@ -11,4 +11,23 @@ import android.arch.persistence.room.RoomDatabase;
 public abstract class FilmDatabase extends RoomDatabase {
 
     public abstract FilmDao filmDao();
+
+
+//    // Initialize the database and its members
+//    private static FilmDatabase INSTANCE;
+//    public static FilmDatabase getDatabase(final Context context){
+//        if (INSTANCE == null){
+//            synchronized (FilmDatabase.class){
+//                if (INSTANCE == null){
+//                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+//                            FilmDatabase.class, "film_database")
+//                            .fallbackToDestructiveMigration()
+//                            .build();
+//                }
+//            }
+//        }
+//
+//        return INSTANCE;
+//    }
+
 }

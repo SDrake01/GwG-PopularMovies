@@ -2,6 +2,7 @@ package com.stevendrake.moviehub.AsyncTasks;
 
 import android.os.AsyncTask;
 
+import com.stevendrake.moviehub.MainActivity;
 import com.stevendrake.moviehub.MovieData;
 import com.stevendrake.moviehub.RoomDatabase.FilmDao;
 
@@ -13,16 +14,13 @@ public class QueryTitleAsyncTask {
 
     public static class getOneTitleTask extends AsyncTask<String, Void, String>{
 
-        private FilmDao asyncTaskDao;
-//        public getOneTitleTask(FilmDao dao){
-//            asyncTaskDao = dao;
-//        }
+        private FilmDao asyncTaskDao = MainActivity.movieFilmDao;
 
         @Override
         protected String doInBackground(String... params){
 
             // Create a variable to pass the returned movie title to the requesting method
-            String queryMovieTitle = "testing";
+            String queryMovieTitle;
 
             // Run the getTitle query from FilmDao using the passed in movie id string
             queryMovieTitle = asyncTaskDao.getTitle(params[0]);

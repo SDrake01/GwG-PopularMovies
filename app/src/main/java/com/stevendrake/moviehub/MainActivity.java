@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.stevendrake.moviehub.RoomDatabase.FilmDao;
 import com.stevendrake.moviehub.RoomDatabase.FilmDatabase;
 
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.net.URL;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,32 +35,22 @@ public class MainActivity extends AppCompatActivity {
     // it will be replaced by the database length when it is included so the app will work offline
     private static final int TEST_LIST_LENGTH = 20;
     private MovieAdapter movieGridAdapter;
-
-    // Initialize the database and its members
-    private static FilmDatabase INSTANCE;
-    public static FilmDatabase getDatabase(final Context context){
-        if (INSTANCE == null){
-            synchronized (FilmDatabase.class){
-                if (INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            FilmDatabase.class, "film_database")
-                            .fallbackToDestructiveMigration()
-                            .build();
-                }
-            }
-        }
-
-        return INSTANCE;
-    }
+    private int gridNumber = 3;
 
     // Create an instance of SharedPreferences and PreferenceChangeListener
     SharedPreferences prefs;
     private PreferenceChangeListener prefChanges = null;
+    public static FilmDao movieFilmDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // try once again to build the database
+        movieFilmDao = Room.databaseBuilder(this.getApplicationContext(), FilmDatabase.class, "movies_database")
+                .build()
+                .filmDao();
 
         // Set the default filter_prefs values
         PreferenceManager.setDefaultValues(this, R.xml.filter_prefs, false);
@@ -72,7 +64,12 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView movieRecyclerView = findViewById(R.id.rv_movie_hub_recycler_view);
 
         // Create and assign the GridLayoutManager for the RecyclerView
-        GridLayoutManager movieGridLayoutManager = new GridLayoutManager(this, 3);
+        if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
+            gridNumber = 5;
+        } else {
+            gridNumber = 3;
+        }
+        GridLayoutManager movieGridLayoutManager = new GridLayoutManager(this, gridNumber);
         movieRecyclerView.setLayoutManager(movieGridLayoutManager);
 
         // Set the MovieAdapter instance with the number of items
@@ -112,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy(){
         super.onDestroy();
         prefs.unregisterOnSharedPreferenceChangeListener(prefChanges);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
     }
 
     public class getMovieRawJson extends AsyncTask<String, Void, String> {
@@ -168,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             // Dismiss the spinner and notify the adapter so it will refresh the recycler view
             spinner.dismiss();
             movieGridAdapter.notifyDataSetChanged();
+
         }
     }
 

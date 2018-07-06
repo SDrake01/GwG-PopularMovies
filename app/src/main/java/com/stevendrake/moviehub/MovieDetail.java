@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.stevendrake.moviehub.AsyncTasks.QueryTitleAsyncTask;
 
 /**
  * Created by calebsdrake on 5/14/2018.
@@ -43,7 +42,7 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         String apiKey = preferences.getString("api_key_setting","");
         // Get the movie movieId from MovieData using the moviePosition integer for the index
         String movieId = MovieData.movieIdNumber[moviePosition];
-        new QueryTitleAsyncTask.getOneTitleTask().execute(movieId);
+        //new QueryTitleAsyncTask.getOneTitleTask().execute(movieId);
 
         // Call the init method passing the position number to load the correct movie details
         init(moviePosition);

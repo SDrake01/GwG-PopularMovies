@@ -5,6 +5,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import java.util.List;
+
 /**
  * Created by calebsdrake on 7/1/2018.
  */
@@ -13,10 +15,10 @@ import android.arch.persistence.room.Query;
 public interface FilmDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Film film);
+    void insert(Film... films);
 
-//    @Query("SELECT * FROM film_table ORDER BY popularity DESC LIMIT 20")
-//    List<Film> getPopularFilms();
+    @Query("SELECT * FROM film_table ORDER BY popularity DESC LIMIT 20")
+    List<Film> getPopularFilms();
 
     @Query("SELECT * FROM film_table ORDER BY rating DESC LIMIT 20")
     Film getTopRatedFilms();

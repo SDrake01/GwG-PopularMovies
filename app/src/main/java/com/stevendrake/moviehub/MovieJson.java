@@ -1,5 +1,7 @@
 package com.stevendrake.moviehub;
 
+import android.content.Context;
+
 import com.stevendrake.moviehub.RoomDatabase.Film;
 import com.stevendrake.moviehub.RoomDatabase.FilmDao;
 
@@ -39,6 +41,9 @@ final class MovieJson {
 
     public static void parseMovieJsonToDatabase(String json, String sortBy) throws JSONException{
 
+        FilmDao jsonFilmDao = MainActivity.movieFilmDao;
+        Context context = null;
+
         // Create json object and array that hold the json datak
         JSONObject outerJson = new JSONObject(json);
         JSONArray fullArray = outerJson.getJSONArray("results");
@@ -49,23 +54,12 @@ final class MovieJson {
 
         // Create an instance of Film to add to the database
         Film filmBuilder = new Film();
-        FilmDao filmDao = null;
 
         // Iterate through the json array to build the object and pass it into the database
         // checking that the fullArray contains data (is not null)
         if (fullArray != null){
             for (int i = 0; i < fullArray.length(); i++){
                 JSONObject jsonFilmData = fullArray.getJSONObject(i);
-//                filmBuilder = new Film(
-//                        jsonFilmData.getString("id"),
-//                        jsonFilmData.getString("title"),
-//                        jsonFilmData.getLong("vote_average"),
-//                        jsonFilmData.getLong("popularity"),
-//                        jsonFilmData.getString("overview"),
-//                        jsonFilmData.getString("poster_path"),
-//                        jsonFilmData.getString("backdrop_path"),
-//                        jsonFilmData.getString("release_date"),
-//                        sortBy);
 
                 filmBuilder.setId(jsonFilmData.getString("id"));
                 filmBuilder.setTitle(jsonFilmData.getString("title"));
@@ -76,9 +70,7 @@ final class MovieJson {
                 filmBuilder.setBackdrop(jsonFilmData.getString("backdrop_path"));
                 filmBuilder.setReleased(jsonFilmData.getString("release_date"));
                 filmBuilder.setSort(sortBy);
-                filmDao.insert(filmBuilder);
-
-//                filmDao.insert(filmBuilder);
+                jsonFilmDao.insert(filmBuilder);
             }
         }
 
