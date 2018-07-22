@@ -1,11 +1,11 @@
-package com.stevendrake.moviehub.RoomDatabase;
+package com.stevendrake.moviehub.Database;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 /**
- * Created by calebsdrake on 7/1/2018.
+ * Created by calebsdrake on 7/22/2018.
  */
 
 @Entity(tableName = "film_table")
@@ -23,8 +23,15 @@ public class Film {
     private String released;
     private String sort;
 
-    public Film(){
-    }
+    public void setId(String newId){this.id = newId;}
+    public void setTitle(String newTitle){this.title = newTitle;}
+    public void setRating(Long newRating){this.rating = newRating;}
+    public void setPopularity(Long newPopularity){this.popularity = newPopularity;}
+    public void setDescription(String newDescription){this.description = newDescription;}
+    public void setPoster(String newPoster){this.poster = newPoster;}
+    public void setBackdrop(String newBackdrop){this.backdrop = newBackdrop;}
+    public void setReleased(String newReleased){this.released = newReleased;}
+    public void setSort(String newSort){this.sort = newSort;}
 
     public String getId(){return id;}
     public String getTitle(){return title;}
@@ -35,15 +42,4 @@ public class Film {
     public String getBackdrop(){return backdrop;}
     public String getReleased(){return released;}
     public String getSort(){return sort;}
-
-    public void setId(String id){this.id = id;}
-    public void setTitle(String title){this.title = title;}
-    public void setRating(Long rating){this.rating = rating;}
-    public void setPopularity(Long popularity){this.popularity = popularity;}
-    public void setDescription(String description){this.description = description;}
-    public void setPoster(String poster){this.poster = poster;}
-    public void setBackdrop(String backdrop){this.backdrop = backdrop;}
-    public void setReleased(String released){this.released = released;}
-    public void setSort(String sort){this.sort = sort;}
-
 }

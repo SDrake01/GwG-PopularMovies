@@ -1,7 +1,6 @@
 package com.stevendrake.moviehub;
 
 import android.app.ProgressDialog;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,9 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.stevendrake.moviehub.RoomDatabase.FilmDao;
-import com.stevendrake.moviehub.RoomDatabase.FilmDatabase;
 
 import org.json.JSONException;
 
@@ -40,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     // Create an instance of SharedPreferences and PreferenceChangeListener
     SharedPreferences prefs;
     private PreferenceChangeListener prefChanges = null;
-    public static FilmDao movieFilmDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // try once again to build the database
-        movieFilmDao = Room.databaseBuilder(this.getApplicationContext(), FilmDatabase.class, "movies_database")
-                .build()
-                .filmDao();
 
         // Set the default filter_prefs values
         PreferenceManager.setDefaultValues(this, R.xml.filter_prefs, false);
@@ -153,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     MovieJson.parseMovieJsonData(httpJsonResults);
                     // parse the movie json data and populate the database
-                    MovieJson.parseMovieJsonToDatabase(httpJsonResults, movieSort);
+                    // MovieJson.parseMovieJsonToDatabase(httpJsonResults, movieSort);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

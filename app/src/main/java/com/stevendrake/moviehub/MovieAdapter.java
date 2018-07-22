@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.stevendrake.moviehub.AsyncTasks.QueryTitleAsyncTask;
 
 /**
  * Created by Steven Drake on 5/10/2018. For the Popular Films - Stage 1 project.
@@ -69,7 +68,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
             int position = getAdapterPosition();
             String positionId = MovieData.movieIdNumber[getAdapterPosition()];
             // Use this line to query the database for the movie information based on the movie id number
-            new QueryTitleAsyncTask.getOneTitleTask().execute(positionId);
+            // new QueryTitleAsyncTask.getOneTitleTask().execute(positionId);
             // This get one title will be replaced by get one movie, then that will be passed into a model
             // in the movie data class that I can pull from for the movie detail page, letting me get info
             // from the database so I can filter for favorites only and not lose functionality
