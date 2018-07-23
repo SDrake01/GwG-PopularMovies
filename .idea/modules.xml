@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GwG-Udacity-PopularMovies2.iml" filepath="$PROJECT_DIR$/GwG-Udacity-PopularMovies2.iml" />
-      <module fileurl="file://C:\Users\calebsdrake\Desktop\Udacity\GwG-Udacity-PopularMovies2\PopularMovies-StevenDrake.iml" filepath="C:\Users\calebsdrake\Desktop\Udacity\GwG-Udacity-PopularMovies2\PopularMovies-StevenDrake.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GwG-Udacity-PopularMovies.iml" filepath="$PROJECT_DIR$/GwG-Udacity-PopularMovies.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\calebsdrake\Desktop\Udacity\GwG-Udacity-PopularMovies2\app\app.iml" filepath="C:\Users\calebsdrake\Desktop\Udacity\GwG-Udacity-PopularMovies2\app\app.iml" />
     </modules>
   </component>
 </project>
