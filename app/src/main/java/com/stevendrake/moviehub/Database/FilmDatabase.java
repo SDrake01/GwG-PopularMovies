@@ -11,12 +11,12 @@ import android.content.Context;
 
 @Database(entities = {Favorite.class, FavReview.class, FavVideo.class, Film.class, Review.class, Video.class}, version = 1)
 public abstract class FilmDatabase extends RoomDatabase {
-    public FavoritesDao favoritesDao;
-    public FavReviewsDao favReviewsDao;
-    public FavVideosDao favVideosDao;
-    public FilmDao filmDao;
-    public ReviewsDao reviewsDao;
-    public VideoDao videoDao;
+    public abstract FavoritesDao favoritesDao();
+    public abstract FavReviewsDao favReviewsDao();
+    public abstract FavVideosDao favVideosDao();
+    public abstract FilmDao filmDao();
+    public abstract ReviewsDao reviewsDao();
+    public abstract VideoDao videoDao();
 
     private static FilmDatabase INSTANCE;
 

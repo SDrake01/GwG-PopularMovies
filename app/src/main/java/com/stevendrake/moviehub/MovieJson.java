@@ -1,5 +1,10 @@
 package com.stevendrake.moviehub;
 
+import android.content.Context;
+
+import com.stevendrake.moviehub.Database.Film;
+import com.stevendrake.moviehub.Database.FilmDao;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,42 +39,42 @@ final class MovieJson {
         }
     }
 
-//    public static void parseMovieJsonToDatabase(String json, String sortBy) throws JSONException{
-//
-//        FilmDao jsonFilmDao = MainActivity.movieFilmDao;
-//        Context context = null;
-//
-//        // Create json object and array that hold the json datak
-//        JSONObject outerJson = new JSONObject(json);
-//        JSONArray fullArray = outerJson.getJSONArray("results");
-//
-//        // Create the strings that will be used to build the full urls
-//        String posterUrl = "https://image.tmdb.org/t/p/w185";
-//        String backdropUrl = "https://image.tmdb.org/t/p/w780";
-//
-//        // Create an instance of Film to add to the database
-//        Film filmBuilder = new Film();
-//
-//        // Iterate through the json array to build the object and pass it into the database
-//        // checking that the fullArray contains data (is not null)
-//        if (fullArray != null){
-//            for (int i = 0; i < fullArray.length(); i++){
-//                JSONObject jsonFilmData = fullArray.getJSONObject(i);
-//
-//                filmBuilder.setId(jsonFilmData.getString("id"));
-//                filmBuilder.setTitle(jsonFilmData.getString("title"));
-//                filmBuilder.setRating(jsonFilmData.getLong("vote_average"));
-//                filmBuilder.setPopularity(jsonFilmData.getLong("popularity"));
-//                filmBuilder.setDescription(jsonFilmData.getString("overview"));
-//                filmBuilder.setPoster(jsonFilmData.getString("poster_path"));
-//                filmBuilder.setBackdrop(jsonFilmData.getString("backdrop_path"));
-//                filmBuilder.setReleased(jsonFilmData.getString("release_date"));
-//                filmBuilder.setSort(sortBy);
-//                jsonFilmDao.insert(filmBuilder);
-//            }
-//        }
-//
-//    }
+    public static void parseMovieJsonToDatabase(String json, String sortBy) throws JSONException{
+
+        FilmDao jsonFilmDao = MainActivity.filmDao;
+        Context context = null;
+
+        // Create json object and array that hold the json datak
+        JSONObject outerJson = new JSONObject(json);
+        JSONArray fullArray = outerJson.getJSONArray("results");
+
+        // Create the strings that will be used to build the full urls
+        String posterUrl = "https://image.tmdb.org/t/p/w185";
+        String backdropUrl = "https://image.tmdb.org/t/p/w780";
+
+        // Create an instance of Film to add to the database
+        Film filmBuilder = new Film();
+
+        // Iterate through the json array to build the object and pass it into the database
+        // checking that the fullArray contains data (is not null)
+        if (fullArray != null){
+            for (int i = 0; i < fullArray.length(); i++){
+                JSONObject jsonFilmData = fullArray.getJSONObject(i);
+
+                filmBuilder.setId(jsonFilmData.getString("id"));
+                filmBuilder.setTitle(jsonFilmData.getString("title"));
+                filmBuilder.setRating(jsonFilmData.getLong("vote_average"));
+                filmBuilder.setPopularity(jsonFilmData.getLong("popularity"));
+                filmBuilder.setDescription(jsonFilmData.getString("overview"));
+                filmBuilder.setPoster(jsonFilmData.getString("poster_path"));
+                filmBuilder.setBackdrop(jsonFilmData.getString("backdrop_path"));
+                filmBuilder.setReleased(jsonFilmData.getString("release_date"));
+                filmBuilder.setSort(sortBy);
+                jsonFilmDao.insertFilm(filmBuilder);
+            }
+        }
+
+    }
 
     public static void parseReviewsJson(String rJson) throws JSONException {
 

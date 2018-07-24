@@ -17,13 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.stevendrake.moviehub.Database.FavReviewsDao;
-import com.stevendrake.moviehub.Database.FavVideosDao;
-import com.stevendrake.moviehub.Database.FavoritesDao;
 import com.stevendrake.moviehub.Database.FilmDao;
 import com.stevendrake.moviehub.Database.FilmDatabase;
-import com.stevendrake.moviehub.Database.ReviewsDao;
-import com.stevendrake.moviehub.Database.VideoDao;
 
 import org.json.JSONException;
 
@@ -41,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
     private MovieAdapter movieGridAdapter;
     private int gridNumber = 3;
 
-    // FilmDatabase moviesDB = FilmDatabase.getDatabase(this);
+//    public FilmDatabase moviesDB = FilmDatabase.getDatabase(this);
+//    public FavoritesDao favoritesDao = moviesDB.favoritesDao;
+//    public FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
+//    public FavVideosDao favVideosDao = moviesDB.favVideosDao;
+    public static FilmDao filmDao;
+//    public ReviewsDao reviewsDao = moviesDB.reviewsDao;
+//    public VideoDao videoDao = moviesDB.videoDao;
+    public FilmDatabase moviesDb;
 
     // Create an instance of SharedPreferences and PreferenceChangeListener
     SharedPreferences prefs;
@@ -53,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // try once again to build the database
-        FilmDatabase moviesDB = FilmDatabase.getDatabase(this);
-        FavoritesDao favoritesDao = moviesDB.favoritesDao;
-        FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
-        FavVideosDao favVideosDao = moviesDB.favVideosDao;
-        FilmDao filmDao = moviesDB.filmDao;
-        ReviewsDao reviewsDao = moviesDB.reviewsDao;
-        VideoDao videoDao = moviesDB.videoDao;
+        moviesDb = FilmDatabase.getDatabase(this);
+//        FavoritesDao favoritesDao = moviesDB.favoritesDao;
+//        FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
+//        FavVideosDao favVideosDao = moviesDB.favVideosDao;
+        filmDao = moviesDb.filmDao();
+//        ReviewsDao reviewsDao = moviesDB.reviewsDao;
+//        VideoDao videoDao = moviesDB.videoDao;
 
         // Set the default filter_prefs values
         PreferenceManager.setDefaultValues(this, R.xml.filter_prefs, false);
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     MovieJson.parseMovieJsonData(httpJsonResults);
                     // parse the movie json data and populate the database
-                    // MovieJson.parseMovieJsonToDatabase(httpJsonResults, movieSort);
+                    MovieJson.parseMovieJsonToDatabase(httpJsonResults, movieSort);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
