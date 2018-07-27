@@ -20,7 +20,7 @@ public class FilmRepository {
         repoPopularFilms = repoFilmDao.getPopularMovies();
     }
 
-    public LiveData<List<Film>> getPopularMovies(){
+    public LiveData<List<Film>> repoGetPopularMovies(){
         return repoPopularFilms;
     }
 }

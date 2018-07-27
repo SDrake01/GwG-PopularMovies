@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.stevendrake.moviehub.AsyncTasks.QueryTitleAsyncTask;
 import com.stevendrake.moviehub.Database.Film;
 
 import java.util.List;
@@ -21,12 +20,13 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHolder> {
 
-    private final int movieCount;
+    //private final int movieCount;
+    private final LayoutInflater inflater;
     // Cached copy of ArrayList<Film> used to populate the UI
     private List<Film> showMovies;
 
-    public MovieAdapter(int numberOfMovies){
-        movieCount = numberOfMovies;
+    public MovieAdapter(Context context){
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -52,10 +52,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
     }
     @Override
     public int getItemCount(){
-        if (MovieData.movieTitles.isEmpty()){
+        if (showMovies == null){
             return 0;
         }else {
-            return movieCount;
+            return showMovies.size();
         }
     }
 
@@ -82,8 +82,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         public void onClick(View view){
             int position = getAdapterPosition();
             String positionId = MovieData.movieIdNumber.get(position);
+            MovieData.setTestingString(showMovies.get(position).getTitle());
             // Use this line to query the database for the movie information based on the movie id number
-            new QueryTitleAsyncTask.getOneTitleTask().execute(positionId);
+            // new QueryTitleAsyncTask.getOneTitleTask().execute(positionId);
             // This get one title will be replaced by get one movie, then that will be passed into a model
             // in the movie data class that I can pull from for the movie detail page, letting me get info
             // from the database so I can filter for favorites only and not lose functionality
@@ -101,9 +102,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
             // Update this to pull the data from the viewmodel instead of from the moviedata class
             // Research how to pull specific data from an object passed in to this method
             //
-            moviePosterTitleView.setText(MovieData.movieTitles.get(position));
+            moviePosterTitleView.setText(showMovies.get(position).getTitle());
             Picasso.with(itemView.getContext())
-                    .load(MovieData.movieImageUrls.get(position))
+                    .load(showMovies.get(position).getPoster())
                     .placeholder(R.drawable.movie_hub_logo_full)
                     .into(moviePosterImageView);
         }

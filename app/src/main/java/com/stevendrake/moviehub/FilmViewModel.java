@@ -23,7 +23,7 @@ public class FilmViewModel extends AndroidViewModel {
         super(application);
 
         viewRepository = new FilmRepository(application);
-        viewPopularMovies = viewRepository.getPopularMovies();
+        viewPopularMovies = viewRepository.repoGetPopularMovies();
     }
 
     LiveData<List<Film>> getPopularMovies(){

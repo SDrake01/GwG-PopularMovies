@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 //    public FavoritesDao favoritesDao = moviesDB.favoritesDao;
 //    public FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
 //    public FavVideosDao favVideosDao = moviesDB.favVideosDao;
-    public static FilmDao filmDao;
+    public static FilmDao mainFilmDao;
 //    public ReviewsDao reviewsDao = moviesDB.reviewsDao;
 //    public VideoDao videoDao = moviesDB.videoDao;
     public FilmDatabase moviesDb;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 //        FavoritesDao favoritesDao = moviesDB.favoritesDao;
 //        FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
 //        FavVideosDao favVideosDao = moviesDB.favVideosDao;
-        filmDao = moviesDb.filmDao();
+        mainFilmDao = moviesDb.filmDao();
 //        ReviewsDao reviewsDao = moviesDB.reviewsDao;
 //        VideoDao videoDao = moviesDB.videoDao;
 
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         movieRecyclerView.setLayoutManager(movieGridLayoutManager);
 
         // Set the MovieAdapter instance with the number of items
-        movieGridAdapter = new MovieAdapter(MovieData.movieTitles.size());
+        movieGridAdapter = new MovieAdapter(this);
 
         // Set the adapter to the RecyclerView
         movieRecyclerView.setAdapter(movieGridAdapter);

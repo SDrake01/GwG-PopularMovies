@@ -18,6 +18,9 @@ public interface FilmDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertFilm(Film... films);
 
+    @Query("DELETE FROM film_table")
+    public void deleteAllFilms();
+
     @Query("SELECT * FROM film_table WHERE sort = 'popular' ORDER BY popularity DESC")
     LiveData<List<Film>> getPopularMovies();
 

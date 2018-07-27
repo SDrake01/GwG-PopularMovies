@@ -49,7 +49,7 @@ final class MovieJson {
 
     public static void parseMovieJsonToDatabase(String json, String sortBy) throws JSONException{
 
-        FilmDao jsonFilmDao = MainActivity.filmDao;
+        FilmDao jsonFilmDao = MainActivity.mainFilmDao;
         Context context = null;
 
         // Create json object and array that hold the json datak
@@ -74,8 +74,8 @@ final class MovieJson {
                 filmBuilder.setRating(jsonFilmData.getLong("vote_average"));
                 filmBuilder.setPopularity(jsonFilmData.getLong("popularity"));
                 filmBuilder.setDescription(jsonFilmData.getString("overview"));
-                filmBuilder.setPoster(jsonFilmData.getString("poster_path"));
-                filmBuilder.setBackdrop(jsonFilmData.getString("backdrop_path"));
+                filmBuilder.setPoster(posterUrl + jsonFilmData.getString("poster_path"));
+                filmBuilder.setBackdrop(backdropUrl + jsonFilmData.getString("backdrop_path"));
                 filmBuilder.setReleased(jsonFilmData.getString("release_date"));
                 filmBuilder.setSort(sortBy);
                 jsonFilmDao.insertFilm(filmBuilder);
