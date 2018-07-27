@@ -1,6 +1,8 @@
 package com.stevendrake.moviehub;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.stevendrake.moviehub.Database.Film;
 import com.stevendrake.moviehub.Database.FilmDao;
 import com.stevendrake.moviehub.Database.FilmDatabase;
 
@@ -24,6 +28,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
@@ -32,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     // The TEST_LIST_LENGTH is to verify design properties and should be removed before release
     // it will be replaced by the database length when it is included so the app will work offline
-    private static final int TEST_LIST_LENGTH = 20;
+    // private static final int TEST_LIST_LENGTH = 20;
+    // TEST_LIST_LENGTH may no longer be necessary
+
     public static MovieAdapter movieGridAdapter;
     private int gridNumber = 3;
 
@@ -44,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 //    public ReviewsDao reviewsDao = moviesDB.reviewsDao;
 //    public VideoDao videoDao = moviesDB.videoDao;
     public FilmDatabase moviesDb;
+
+    // Create a ViewModel variable
+    private FilmViewModel movieViewModel;
 
     // Create an instance of SharedPreferences and PreferenceChangeListener
     SharedPreferences prefs;
@@ -63,7 +73,15 @@ public class MainActivity extends AppCompatActivity {
 //        ReviewsDao reviewsDao = moviesDB.reviewsDao;
 //        VideoDao videoDao = moviesDB.videoDao;
 
-
+        // Get the ViewModel from the view model provider
+        movieViewModel = ViewModelProviders.of(this).get(FilmViewModel.class);
+        // Add an observer for the ViewModel
+        movieViewModel.getPopularMovies().observe(this, new Observer<List<Film>>() {
+            @Override
+            public void onChanged(@Nullable List<Film> films) {
+                movieGridAdapter.setMovies(films);
+            }
+        });
         // Set the default filter_prefs values
         PreferenceManager.setDefaultValues(this, R.xml.filter_prefs, false);
 

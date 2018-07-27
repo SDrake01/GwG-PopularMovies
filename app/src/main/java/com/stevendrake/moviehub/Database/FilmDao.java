@@ -1,5 +1,6 @@
 package com.stevendrake.moviehub.Database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -18,7 +19,10 @@ public interface FilmDao {
     void insertFilm(Film... films);
 
     @Query("SELECT * FROM film_table WHERE sort = 'popular' ORDER BY popularity DESC")
-    List<Film> getPopularMovies();
+    LiveData<List<Film>> getPopularMovies();
+
+    @Query("SELECT * FROM film_table WHERE sort = 'top_rated' ORDER BY rating DESC")
+    List<Film> getTopRatedMovies();
 
     @Query("SELECT title FROM film_table WHERE id = :idIn")
     String getOneFilmTitle(String idIn);

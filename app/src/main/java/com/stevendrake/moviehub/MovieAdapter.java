@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.stevendrake.moviehub.AsyncTasks.QueryTitleAsyncTask;
+import com.stevendrake.moviehub.Database.Film;
+
+import java.util.List;
 
 /**
  * Created by Steven Drake on 5/10/2018. For the Popular Films - Stage 1 project.
@@ -19,6 +22,8 @@ import com.stevendrake.moviehub.AsyncTasks.QueryTitleAsyncTask;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHolder> {
 
     private final int movieCount;
+    // Cached copy of ArrayList<Film> used to populate the UI
+    private List<Film> showMovies;
 
     public MovieAdapter(int numberOfMovies){
         movieCount = numberOfMovies;
@@ -39,6 +44,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         holder.bind(position);
     }
 
+    // Used to hold the List<Film> data for the UI to display
+    // Updates the arraylist and notifies when the data has updated
+    public void setMovies(List<Film> movies){
+        showMovies = movies;
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount(){
         if (MovieData.movieTitles.isEmpty()){
