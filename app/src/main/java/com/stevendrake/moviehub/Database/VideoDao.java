@@ -16,6 +16,6 @@ public interface VideoDao {
     @Insert
     void insertVideo(Video... videos);
 
-    @Query("SELECT video_movie_id,vidkey,name,site,type FROM videos_table")
+    @Query("SELECT * FROM videos_table")
     List<Video> getAllVideos();
 }

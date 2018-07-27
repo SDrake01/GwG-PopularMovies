@@ -16,6 +16,6 @@ public interface FavReviewsDao {
     @Insert
     void insertFavReview(FavReview... favReviews);
 
-    @Query("SELECT fav_review_movie_id,favResults,favAuthor,favContents FROM FavReview")
+    @Query("SELECT * FROM fav_reviews_table")
     List<FavReview> getAllFavReviews();
 }

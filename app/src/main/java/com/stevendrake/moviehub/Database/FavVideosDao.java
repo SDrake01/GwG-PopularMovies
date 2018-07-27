@@ -16,6 +16,6 @@ public interface FavVideosDao {
     @Insert
     void insertFavVideo(FavVideo... favVideos);
 
-    @Query("SELECT fav_video_movie_id,favKey,favName,favSite,favType FROM FavVideo")
+    @Query("SELECT * FROM fav_videos_table")
     List<FavVideo> getAllFavVideos();
 }

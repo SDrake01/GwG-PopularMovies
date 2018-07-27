@@ -24,17 +24,25 @@ final class MovieJson {
         // Create the strings that will be used to build the urls for picasso
         String posterUrl = "https://image.tmdb.org/t/p/w185";
         String backdropUrl = "https://image.tmdb.org/t/p/w780";
+        // Clear the MovieData arraylists before (re)populating them
+        MovieData.movieTitles.clear();
+        MovieData.movieRatings.clear();
+        MovieData.movieReleaseDates.clear();
+        MovieData.movieDescriptions.clear();
+        MovieData.movieImageUrls.clear();
+        MovieData.movieBackdropUrls.clear();
+        MovieData.movieIdNumber.clear();
         // Iterate through the json array to build the view arrays
         if (fullArray != null) {
             for (int i = 0; i < fullArray.length(); i++) {
                 JSONObject titleJson = fullArray.getJSONObject(i);
-                MovieData.movieTitles[i] = titleJson.getString("title");
-                MovieData.movieRatings[i] = titleJson.getLong("vote_average");
-                MovieData.movieReleaseDates[i] = titleJson.getString("release_date");
-                MovieData.movieDescriptions[i] = titleJson.getString("overview");
-                MovieData.movieImageUrls[i] = posterUrl + titleJson.getString("poster_path");
-                MovieData.movieBackdropUrls[i] = backdropUrl + titleJson.getString("backdrop_path");
-                MovieData.movieIdNumber[i] = titleJson.getString("id");
+                MovieData.movieTitles.add(titleJson.getString("title"));
+                MovieData.movieRatings.add(titleJson.getLong("vote_average"));
+                MovieData.movieReleaseDates.add(titleJson.getString("release_date"));
+                MovieData.movieDescriptions.add(titleJson.getString("overview"));
+                MovieData.movieImageUrls.add(posterUrl + titleJson.getString("poster_path"));
+                MovieData.movieBackdropUrls.add(backdropUrl + titleJson.getString("backdrop_path"));
+                MovieData.movieIdNumber.add(titleJson.getString("id"));
             }
         }
     }

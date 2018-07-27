@@ -41,7 +41,7 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String apiKey = preferences.getString("api_key_setting","");
         // Get the movie movieId from MovieData using the moviePosition integer for the index
-        String movieId = MovieData.movieIdNumber[moviePosition];
+        String movieId = MovieData.movieIdNumber.get(moviePosition);
         //new QueryTitleAsyncTask.getOneTitleTask().execute(movieId);
 
         // Call the init method passing the position number to load the correct movie details
@@ -112,13 +112,19 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
 
         // Verify the MovieData arrays are not null before trying to populate the view data
         // using the movieTitles array location 15 as a reference to eliminate null pointer exceptions
-        if (MovieData.movieTitles[15] != null) {
-            // Update view elements with selected movie data
-            title.setText(MovieData.movieTitles[moviePosition]);
-            releaseDate.setText(String.format(getResources().getString(R.string.release_date), MovieData.movieReleaseDates[moviePosition]));
-            rating.setRating(MovieData.movieRatings[moviePosition]);
-            description.setText(MovieData.movieDescriptions[moviePosition]);
-            Picasso.with(this).load(MovieData.movieBackdropUrls[moviePosition]).into(poster);
-        }
+//        if (MovieData.movieTitles[15] != null) {
+//            // Update view elements with selected movie data
+//            title.setText(MovieData.movieTitles[moviePosition]);
+//            releaseDate.setText(String.format(getResources().getString(R.string.release_date), MovieData.movieReleaseDates[moviePosition]));
+//            rating.setRating(MovieData.movieRatings[moviePosition]);
+//            description.setText(MovieData.movieDescriptions[moviePosition]);
+//            Picasso.with(this).load(MovieData.movieBackdropUrls[moviePosition]).into(poster);
+//        }
+        title.setText(MovieData.movieTitles.get(moviePosition));
+        releaseDate.setText(String.format(getResources().getString(R.string.release_date),
+                MovieData.movieReleaseDates.get(moviePosition)));
+        rating.setRating(MovieData.movieRatings.get(moviePosition));
+        description.setText(MovieData.movieDescriptions.get(moviePosition));
+        Picasso.with(this).load(MovieData.movieBackdropUrls.get(moviePosition)).into(poster);
     }
 }

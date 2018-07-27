@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     // The TEST_LIST_LENGTH is to verify design properties and should be removed before release
     // it will be replaced by the database length when it is included so the app will work offline
     private static final int TEST_LIST_LENGTH = 20;
-    private MovieAdapter movieGridAdapter;
+    public static MovieAdapter movieGridAdapter;
     private int gridNumber = 3;
 
 //    public FilmDatabase moviesDB = FilmDatabase.getDatabase(this);
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 //        ReviewsDao reviewsDao = moviesDB.reviewsDao;
 //        VideoDao videoDao = moviesDB.videoDao;
 
+
         // Set the default filter_prefs values
         PreferenceManager.setDefaultValues(this, R.xml.filter_prefs, false);
 
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         movieRecyclerView.setLayoutManager(movieGridLayoutManager);
 
         // Set the MovieAdapter instance with the number of items
-        movieGridAdapter = new MovieAdapter(TEST_LIST_LENGTH);
+        movieGridAdapter = new MovieAdapter(MovieData.movieTitles.size());
 
         // Set the adapter to the RecyclerView
         movieRecyclerView.setAdapter(movieGridAdapter);

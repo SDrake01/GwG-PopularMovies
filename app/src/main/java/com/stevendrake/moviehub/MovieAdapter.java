@@ -29,7 +29,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         Context context = viewGroup.getContext();
         int movieCardLayoutId = R.layout.movie_poster_cards;
         LayoutInflater inflater = LayoutInflater.from(context);
-        //boolean attachToParentImmediately = false;
 
         View view = inflater.inflate(movieCardLayoutId, viewGroup, false);
 
@@ -42,7 +41,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
 
     @Override
     public int getItemCount(){
-        return movieCount;
+        if (MovieData.movieTitles.isEmpty()){
+            return 0;
+        }else {
+            return movieCount;
+        }
     }
 
     class PosterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -67,7 +70,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         @Override
         public void onClick(View view){
             int position = getAdapterPosition();
-            String positionId = MovieData.movieIdNumber[getAdapterPosition()];
+            String positionId = MovieData.movieIdNumber.get(position);
             // Use this line to query the database for the movie information based on the movie id number
             new QueryTitleAsyncTask.getOneTitleTask().execute(positionId);
             // This get one title will be replaced by get one movie, then that will be passed into a model
@@ -87,9 +90,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
             // Update this to pull the data from the viewmodel instead of from the moviedata class
             // Research how to pull specific data from an object passed in to this method
             //
-            moviePosterTitleView.setText(MovieData.movieTitles[position]);
+            moviePosterTitleView.setText(MovieData.movieTitles.get(position));
             Picasso.with(itemView.getContext())
-                    .load(MovieData.movieImageUrls[position])
+                    .load(MovieData.movieImageUrls.get(position))
                     .placeholder(R.drawable.movie_hub_logo_full)
                     .into(moviePosterImageView);
         }

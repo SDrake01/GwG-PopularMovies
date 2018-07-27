@@ -16,6 +16,6 @@ public interface FavoritesDao {
     @Insert
     void insertFavorite(Favorite... favorites);
 
-    @Query("SELECT * FROM Favorite ORDER BY title ASC")
+    @Query("SELECT * FROM favorites_table ORDER BY favTitle ASC")
     List<Favorite> getAllFavorites();
 }
