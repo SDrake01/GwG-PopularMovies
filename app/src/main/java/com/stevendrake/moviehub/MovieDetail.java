@@ -41,7 +41,7 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String apiKey = preferences.getString("api_key_setting","");
         // Get the movie movieId from MovieData using the moviePosition integer for the index
-        String movieId = MovieData.movieIdNumber.get(moviePosition);
+        String movieId = MovieAdapter.showMovies.get(moviePosition).getId();
         //new QueryTitleAsyncTask.getOneTitleTask().execute(movieId);
 
         // Call the init method passing the position number to load the correct movie details
@@ -120,11 +120,11 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
 //            description.setText(MovieData.movieDescriptions[moviePosition]);
 //            Picasso.with(this).load(MovieData.movieBackdropUrls[moviePosition]).into(poster);
 //        }
-        title.setText(MovieData.movieTitles.get(moviePosition));
+        title.setText(MovieAdapter.showMovies.get(moviePosition).getTitle());
         releaseDate.setText(String.format(getResources().getString(R.string.release_date),
-                MovieData.movieReleaseDates.get(moviePosition)));
-        rating.setRating(MovieData.movieRatings.get(moviePosition));
-        description.setText(MovieData.movieDescriptions.get(moviePosition));
-        Picasso.with(this).load(MovieData.movieBackdropUrls.get(moviePosition)).into(poster);
+                MovieAdapter.showMovies.get(moviePosition).getReleased()));
+        rating.setRating(MovieAdapter.showMovies.get(moviePosition).getRating());
+        description.setText(MovieAdapter.showMovies.get(moviePosition).getDescription());
+        Picasso.with(this).load(MovieAdapter.showMovies.get(moviePosition).getBackdrop()).into(poster);
     }
 }

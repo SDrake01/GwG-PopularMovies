@@ -17,16 +17,16 @@ import java.util.List;
 public class FilmViewModel extends AndroidViewModel {
 
     private FilmRepository viewRepository;
-    private LiveData<List<Film>> viewPopularMovies;
+    private LiveData<List<Film>> viewMoviesList;
 
     public FilmViewModel(@NonNull Application application) {
         super(application);
 
         viewRepository = new FilmRepository(application);
-        viewPopularMovies = viewRepository.repoGetPopularMovies();
+        viewMoviesList = viewRepository.repoGetMoviesList();
     }
 
-    LiveData<List<Film>> getPopularMovies(){
-        return viewPopularMovies;
+    LiveData<List<Film>> getMoviesList(){
+        return viewMoviesList;
     }
 }

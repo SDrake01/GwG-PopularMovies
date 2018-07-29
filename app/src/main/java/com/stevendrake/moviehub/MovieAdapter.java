@@ -23,7 +23,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
     //private final int movieCount;
     private final LayoutInflater inflater;
     // Cached copy of ArrayList<Film> used to populate the UI
-    private List<Film> showMovies;
+    public static List<Film> showMovies;
 
     public MovieAdapter(Context context){
         inflater = LayoutInflater.from(context);
@@ -81,8 +81,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         @Override
         public void onClick(View view){
             int position = getAdapterPosition();
-            String positionId = MovieData.movieIdNumber.get(position);
-            MovieData.setTestingString(showMovies.get(position).getTitle());
+            String positionId = MovieAdapter.showMovies.get(position).getId();
+            //MovieData.setTestingString(showMovies.get(position).getTitle());
             // Use this line to query the database for the movie information based on the movie id number
             // new QueryTitleAsyncTask.getOneTitleTask().execute(positionId);
             // This get one title will be replaced by get one movie, then that will be passed into a model

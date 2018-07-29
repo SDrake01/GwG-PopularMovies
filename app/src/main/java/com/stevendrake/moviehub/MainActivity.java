@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // Get the ViewModel from the view model provider
         movieViewModel = ViewModelProviders.of(this).get(FilmViewModel.class);
         // Add an observer for the ViewModel
-        movieViewModel.getPopularMovies().observe(this, new Observer<List<Film>>() {
+        movieViewModel.getMoviesList().observe(this, new Observer<List<Film>>() {
             @Override
             public void onChanged(@Nullable List<Film> films) {
                 movieGridAdapter.setMovies(films);

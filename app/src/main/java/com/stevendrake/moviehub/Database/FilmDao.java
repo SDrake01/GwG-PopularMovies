@@ -25,7 +25,7 @@ public interface FilmDao {
     LiveData<List<Film>> getPopularMovies();
 
     @Query("SELECT * FROM film_table WHERE sort = 'top_rated' ORDER BY rating DESC")
-    List<Film> getTopRatedMovies();
+    LiveData<List<Film>> getTopRatedMovies();
 
     @Query("SELECT title FROM film_table WHERE id = :idIn")
     String getOneFilmTitle(String idIn);
