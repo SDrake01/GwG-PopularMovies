@@ -50,6 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         showMovies = movies;
         notifyDataSetChanged();
     }
+
     @Override
     public int getItemCount(){
         if (showMovies == null){
@@ -81,10 +82,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         @Override
         public void onClick(View view){
             int position = getAdapterPosition();
-            String positionId = MovieAdapter.showMovies.get(position).getId();
             //MovieData.setTestingString(showMovies.get(position).getTitle());
             // Use this line to query the database for the movie information based on the movie id number
-            // new QueryTitleAsyncTask.getOneTitleTask().execute(positionId);
+            // new QueryAsyncTask.getOneTitleTask().execute(positionId);
             // This get one title will be replaced by get one movie, then that will be passed into a model
             // in the movie data class that I can pull from for the movie detail page, letting me get info
             // from the database so I can filter for favorites only and not lose functionality
@@ -98,10 +98,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         void bind(int position){
             // Bind each instance of the movie poster ImageView and movie title TextView
             // with with its own data
-            //
-            // Update this to pull the data from the viewmodel instead of from the moviedata class
-            // Research how to pull specific data from an object passed in to this method
-            //
             moviePosterTitleView.setText(showMovies.get(position).getTitle());
             Picasso.with(itemView.getContext())
                     .load(showMovies.get(position).getPoster())

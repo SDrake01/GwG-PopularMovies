@@ -13,7 +13,7 @@ import java.util.Scanner;
  * Created by calebsdrake on 5/23/2018.
  */
 
-final class MovieNetwork {
+public final class MovieNetwork {
 
     // This construction of final String variables and the buildMovieUrl method
     // were written using the Sunshine app as a direct example.  I have changed
@@ -71,7 +71,7 @@ final class MovieNetwork {
         }
     }
 
-    static URL buildReviewsUrl(String movieId, String apiKey){
+    public static URL buildReviewsUrl(String movieId, String apiKey){
 
         // Create a string to fill in the url
         final String REVIEWS = "reviews";
@@ -94,5 +94,20 @@ final class MovieNetwork {
         }
 
         return url;
+    }
+
+    // Take the movie reviews Url given and return the full json results from the Api
+    public static String getRevJsonFromHttpUrl(URL url) throws IOException {
+        HttpURLConnection revUrlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream inputStream = revUrlConnection.getInputStream();
+
+            Scanner scanner = new Scanner(inputStream);
+            scanner.useDelimiter("//Q//");
+
+            return scanner.next();
+        } finally {
+            revUrlConnection.disconnect();
+        }
     }
 }

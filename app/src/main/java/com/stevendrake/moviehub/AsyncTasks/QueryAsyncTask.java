@@ -12,7 +12,7 @@ import java.util.List;
  * Created by calebsdrake on 7/23/2018.
  */
 
-public class QueryTitleAsyncTask {
+public class QueryAsyncTask {
 
     public static class getOneTitleTask extends AsyncTask<String, Void, String>{
 

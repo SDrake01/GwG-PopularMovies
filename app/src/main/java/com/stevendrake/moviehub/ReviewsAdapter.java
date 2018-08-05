@@ -7,53 +7,63 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.stevendrake.moviehub.Database.Review;
+
+import java.util.List;
+
 /**
  * Created by calebsdrake on 6/25/2018.
  */
 
-public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsViewHolder> {
+public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder> {
 
-    private int reviewsCount = 0;
+    class ReviewViewHolder extends RecyclerView.ViewHolder{
+        private final TextView reviewAuthor;
+        private final TextView reviewContent;
 
-    @Override
-    public ReviewsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Context context = viewGroup.getContext();
-        int reviewCardId = R.layout.movie_reviews_cards;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        Boolean attachToParentImmediately = false;
+        public ReviewViewHolder(View itemView) {
+            super(itemView);
+            reviewAuthor = itemView.findViewById(R.id.tv_reviews_cards_author);
+            reviewContent = itemView.findViewById(R.id.tv_reviews_cards_content);
+        }
+    }
 
-        View view = inflater.inflate(reviewCardId, viewGroup, attachToParentImmediately);
+    private final LayoutInflater revInflater;
+    public static List<Review> showReviews;
 
-        return new ReviewsViewHolder(context, view);
+    ReviewsAdapter(Context context){
+        revInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public void onBindViewHolder(ReviewsViewHolder holder, int position) {
-        holder.bind(position);
+    public ReviewViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View itemView = revInflater.inflate(R.layout.movie_reviews_cards, viewGroup, false);
+        return new ReviewViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(ReviewViewHolder holder, int position) {
+        if (showReviews != null) {
+            Review current = showReviews.get(position);
+            holder.reviewAuthor.setText(current.getAuthor());
+            holder.reviewContent.setText(current.getContents());
+        }else {
+            holder.reviewAuthor.setText("No Reviews");
+            holder.reviewContent.setText("To Display");
+        }
+    }
+
+    void setReviews(List<Review> reviews){
+        showReviews = reviews;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return MovieData.reviewResults;
-    }
-
-    public class ReviewsViewHolder extends RecyclerView.ViewHolder {
-
-        final TextView reviewsAuthor;
-        final TextView reviewsContent;
-        final Context reviewsContext = null;
-
-        public ReviewsViewHolder(Context context, View itemView) {
-            super(itemView);
-
-            // Define the reviews author and reviews content text views
-            reviewsAuthor = itemView.findViewById(R.id.tv_reviews_cards_author);
-            reviewsContent = itemView.findViewById(R.id.tv_reviews_cards_content);
-        }
-
-        void bind(int position){
-            reviewsAuthor.setText(MovieData.reviewAuthors.indexOf(position));
-            reviewsContent.setText(MovieData.reviewContents.indexOf(position));
+        if (showReviews == null){
+            return 0;
+        } else {
+            return showReviews.size();
         }
     }
 }

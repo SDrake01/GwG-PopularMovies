@@ -1,6 +1,6 @@
 package com.stevendrake.moviehub;
 
-import com.stevendrake.moviehub.Database.Film;
+import com.stevendrake.moviehub.Database.Review;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +11,6 @@ import java.util.List;
 
 public class MovieData {
 
-//    static final String[] movieTitles = new String[20];
-//    static final Long[] movieRatings = new Long[20];
-//    static final String[] movieReleaseDates = new String[20];
-//    static final String[] movieDescriptions = new String[20];
-//    static final String[] movieImageUrls = new String[20];
-//    static final String[] movieBackdropUrls = new String[20];
-//    static final String[] movieIdNumber = new String[20];
-
     static List<String> movieIdNumber = new ArrayList<String>();
     public static List<String> movieTitles = new ArrayList<String>();
     static List<Long> movieRatings = new ArrayList<Long>();
@@ -27,17 +19,23 @@ public class MovieData {
     static List<String> movieBackdropUrls = new ArrayList<String>();
     static List<String> movieReleaseDates = new ArrayList<String>();
 
-    public static List<Film> movieObjects = new ArrayList<Film>();
+    public static List<Review> testObjects = new ArrayList<Review>();
 
-    // Create array lists for the trailers and reviews
+    // Create array lists and search strings for the trailers and reviews
     static int reviewResults = 0;
-    static List<String> reviewAuthors = null;
-    static List<String> reviewContents = null;
+    static List<String> reviewAuthors = new ArrayList<String>();
+    static List<String> reviewContents = new ArrayList<String>();
+    public static String reviewFilmId;
+    public static void setReviewId(String review){reviewFilmId = review;}
+    static String getReviewId(){return reviewFilmId;}
 
     static int videoResults = 0;
     static List<String> videoTitles = null;
     static List<String> videoUrls = null;
     static List<String> videoIds = null;
+    public static String videoFilmId;
+    public static void setVideoId(String video){videoFilmId = video;}
+    static String getVideoId(){return videoFilmId;}
 
     static String testingString = null;
     public static void setTestingString(String test){

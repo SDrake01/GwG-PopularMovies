@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.stevendrake.moviehub.Database.Film;
 import com.stevendrake.moviehub.Database.FilmDao;
+import com.stevendrake.moviehub.Database.Review;
+import com.stevendrake.moviehub.Database.ReviewsDao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +15,7 @@ import org.json.JSONObject;
  * Created by calebsdrake on 5/20/2018.
  */
 
-final class MovieJson {
+public final class MovieJson {
 
     public static void parseMovieJsonData(String json) throws JSONException{
 
@@ -86,29 +88,30 @@ final class MovieJson {
 
     public static void parseReviewsJson(String rJson) throws JSONException {
 
-        // Clear the moviedata.review* lists before repopulating them to avoid
-        // having any previous movie's reviews show
-        if (MovieData.reviewAuthors != null) {
-            MovieData.reviewAuthors.clear();
-        }
-        if (MovieData.reviewContents != null) {
-            MovieData.reviewContents.clear();
-        }
+        Review reviewBuilder = new Review();
+        ReviewsDao jsonReviewsDao = MainActivity.mainReviewsDao;
+        int reviewResults;
 
         // Create the json object and array that holds the reviews data
         JSONObject reviewsObject = new JSONObject(rJson);
         JSONArray reviewsArray = reviewsObject.getJSONArray("results");
 
         // Get the number of reviews to use in the loop when parsing the individual reviews
-        MovieData.reviewResults = reviewsObject.getInt("total_results");
+        reviewResults = reviewsObject.getInt("total_results");
 
-        if (MovieData.reviewResults > 0){
-            for (int i = 0; i < MovieData.reviewResults; i++){
+        if (reviewResults > 0){
+            for (int i = 0; i < reviewsArray.length(); i++){
                 JSONObject eachReviewObject = reviewsArray.getJSONObject(i);
+                reviewBuilder.setReviewMovieId(reviewsObject.getString("id"));
+                reviewBuilder.setId(eachReviewObject.getString("id"));
+                reviewBuilder.setResults(reviewResults);
+                reviewBuilder.setAuthor(eachReviewObject.getString("author"));
+                reviewBuilder.setContents(eachReviewObject.getString("content"));
+                jsonReviewsDao.insertReview(reviewBuilder);
+
                 MovieData.reviewAuthors.add(eachReviewObject.getString("author"));
                 MovieData.reviewContents.add(eachReviewObject.getString("content"));
             }
         }
-
     }
 }

@@ -10,9 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.stevendrake.moviehub.AsyncTasks.ReviewsAsyncTask;
+import com.stevendrake.moviehub.Database.ReviewsDao;
 
 /**
  * Created by calebsdrake on 5/14/2018.
@@ -22,6 +23,9 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
 
     private Boolean isFavorite = false;
     int moviePosition;
+    String apiKey;
+    String movieId;
+    ReviewsDao detailReviewsDao = MainActivity.mainReviewsDao;
 
     // Create an instance of Shared Preferences to save the api key
     // to pass into the methods that query the movie database and return
@@ -39,33 +43,33 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
 
         // Get the user's api key from the Shared Preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String apiKey = preferences.getString("api_key_setting","");
+        apiKey = preferences.getString("api_key_setting","");
         // Get the movie movieId from MovieData using the moviePosition integer for the index
-        String movieId = MovieAdapter.showMovies.get(moviePosition).getId();
-        //new QueryTitleAsyncTask.getOneTitleTask().execute(movieId);
+        movieId = MovieAdapter.showMovies.get(moviePosition).getId();
+        MovieData.reviewFilmId = movieId;
+        //new QueryAsyncTask.getOneTitleTask().execute(movieId);
 
         // Call the init method passing the position number to load the correct movie details
         init(moviePosition);
 
-        // Call the getMovieReviews method from the ReviewsTask class to load data that will
-        // populate the movie reviews page (hopefully before the user clicks on the 'read reviews' button
-        new ReviewsTask.getMovieReviews().execute(movieId, apiKey);
-
         // Use this toast to verify that I can set and get data to/from the database
-        Toast.makeText(getApplicationContext(), MovieData.testingString, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), MovieData.reviewFilmId, Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void onClick(View view){
         Button favsButton = findViewById(R.id.btn_detail_favorites);
+        String movieId = MovieAdapter.showMovies.get(moviePosition).getId();
 
         switch (view.getId()){
             case R.id.btn_detail_trailers:
+                // Run VideosAsyncTask to query the API for the videos data
                 Intent trailersIntent = new Intent(getApplicationContext(), MovieTrailers.class);
                 startActivity(trailersIntent);
                 break;
             case R.id.btn_detail_reviews:
+                new ReviewsAsyncTask.getFilmReviews(this).execute(movieId, apiKey);
                 Intent reviewsIntent = new Intent(getApplicationContext(), MovieReviews.class);
                 startActivity(reviewsIntent);
                 break;
@@ -78,10 +82,12 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
                     favStar.setImageResource(android.R.drawable.btn_star_big_off);
                     favsButton.setText(getResources().getText(R.string.favorites));
                     isFavorite = false;
+                    // Delete this film from the favorites table
                 } else {
                     favStar.setImageResource(android.R.drawable.btn_star_big_on);
                     favsButton.setText(getResources().getText(R.string.removeFavs));
                     isFavorite = true;
+                    // Add this film to the favorites table
                 }
         }
     }
@@ -110,16 +116,8 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         btnReviews.setOnClickListener(this);
         btnFavs.setOnClickListener(this);
 
-        // Verify the MovieData arrays are not null before trying to populate the view data
-        // using the movieTitles array location 15 as a reference to eliminate null pointer exceptions
-//        if (MovieData.movieTitles[15] != null) {
-//            // Update view elements with selected movie data
-//            title.setText(MovieData.movieTitles[moviePosition]);
-//            releaseDate.setText(String.format(getResources().getString(R.string.release_date), MovieData.movieReleaseDates[moviePosition]));
-//            rating.setRating(MovieData.movieRatings[moviePosition]);
-//            description.setText(MovieData.movieDescriptions[moviePosition]);
-//            Picasso.with(this).load(MovieData.movieBackdropUrls[moviePosition]).into(poster);
-//        }
+        // Get and display the data from the MovieAdapter cached data using the passed in position number
+        // to reference the index of the cached arraylist
         title.setText(MovieAdapter.showMovies.get(moviePosition).getTitle());
         releaseDate.setText(String.format(getResources().getString(R.string.release_date),
                 MovieAdapter.showMovies.get(moviePosition).getReleased()));

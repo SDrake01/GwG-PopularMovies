@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.stevendrake.moviehub.Database.Film;
 import com.stevendrake.moviehub.Database.FilmDao;
 import com.stevendrake.moviehub.Database.FilmDatabase;
+import com.stevendrake.moviehub.Database.ReviewsDao;
 
 import org.json.JSONException;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 //    public FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
 //    public FavVideosDao favVideosDao = moviesDB.favVideosDao;
     public static FilmDao mainFilmDao;
-//    public ReviewsDao reviewsDao = moviesDB.reviewsDao;
+    public static ReviewsDao mainReviewsDao;
 //    public VideoDao videoDao = moviesDB.videoDao;
     public FilmDatabase moviesDb;
 
@@ -64,13 +65,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // try once again to build the database
         moviesDb = FilmDatabase.getDatabase(this);
 //        FavoritesDao favoritesDao = moviesDB.favoritesDao;
 //        FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
 //        FavVideosDao favVideosDao = moviesDB.favVideosDao;
         mainFilmDao = moviesDb.filmDao();
-//        ReviewsDao reviewsDao = moviesDB.reviewsDao;
+        mainReviewsDao = moviesDb.reviewsDao();
 //        VideoDao videoDao = moviesDB.videoDao;
 
         // Get the ViewModel from the view model provider
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 movieGridAdapter.setMovies(films);
             }
         });
+
         // Set the default filter_prefs values
         PreferenceManager.setDefaultValues(this, R.xml.filter_prefs, false);
 
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             // only if httpJsonResults returns a value from the Api
             if (httpJsonResults != null) {
                 try {
-                    MovieJson.parseMovieJsonData(httpJsonResults);
+                    //MovieJson.parseMovieJsonData(httpJsonResults);
                     // parse the movie json data and populate the database
                     MovieJson.parseMovieJsonToDatabase(httpJsonResults, movieSort);
                 } catch (JSONException e) {
