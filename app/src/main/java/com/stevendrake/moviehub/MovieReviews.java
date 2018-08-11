@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.stevendrake.moviehub.Database.Review;
 
@@ -40,6 +39,6 @@ public class MovieReviews extends AppCompatActivity {
         });
 
         // Use this toast to verify that I can set and get data to/from the database
-        Toast.makeText(getApplicationContext(), MovieData.reviewFilmId, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), MovieData.reviewFilmId, Toast.LENGTH_LONG).show();
     }
 }

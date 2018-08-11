@@ -22,6 +22,7 @@ public class Film {
     private String backdrop;
     private String released;
     private String sort;
+    private String favorite;
 
     public void setId(String newId){this.id = newId;}
     public void setTitle(String newTitle){this.title = newTitle;}
@@ -32,6 +33,7 @@ public class Film {
     public void setBackdrop(String newBackdrop){this.backdrop = newBackdrop;}
     public void setReleased(String newReleased){this.released = newReleased;}
     public void setSort(String newSort){this.sort = newSort;}
+    public void setFavorite(String newFavorite){this.favorite = newFavorite;}
 
     public String getId(){return id;}
     public String getTitle(){return title;}
@@ -42,4 +44,5 @@ public class Film {
     public String getBackdrop(){return backdrop;}
     public String getReleased(){return released;}
     public String getSort(){return sort;}
+    public String getFavorite(){return favorite;}
 }

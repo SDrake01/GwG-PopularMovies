@@ -43,7 +43,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     @Override
     public void onBindViewHolder(ReviewViewHolder holder, int position) {
-        if (showReviews != null) {
+        if (showReviews != null || showReviews.size() > 0) {
             Review current = showReviews.get(position);
             holder.reviewAuthor.setText(current.getAuthor());
             holder.reviewContent.setText(current.getContents());

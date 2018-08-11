@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,7 +13,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.stevendrake.moviehub.AsyncTasks.FavoritesAsyncTask;
 import com.stevendrake.moviehub.AsyncTasks.ReviewsAsyncTask;
+import com.stevendrake.moviehub.AsyncTasks.VideosAsyncTask;
 import com.stevendrake.moviehub.Database.ReviewsDao;
 
 /**
@@ -21,10 +24,13 @@ import com.stevendrake.moviehub.Database.ReviewsDao;
 
 public class MovieDetail extends AppCompatActivity implements View.OnClickListener {
 
-    private Boolean isFavorite = false;
+    Boolean isFavorite = false;
     int moviePosition;
     String apiKey;
     String movieId;
+    String movieSort;
+    ImageView favStar;
+    Button favsButton;
     ReviewsDao detailReviewsDao = MainActivity.mainReviewsDao;
 
     // Create an instance of Shared Preferences to save the api key
@@ -37,9 +43,21 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail);
 
+        // Define the favorites star imageview so it can be updated
+        favStar = findViewById(R.id.iv_detail_favorites_icon);
+        favsButton = findViewById(R.id.btn_detail_favorites);
+
         // Get the grid position number from the main activity so it can be sent to
         // the init() method to load the page
         moviePosition = getIntent().getIntExtra("movieNumber", 0);
+
+        // Update the 'isFavorite' boolean if this movie is marked as a favorite
+        // and the 'favorite' field is not null
+        if (MovieAdapter.showMovies.get(moviePosition).getFavorite() != null) {
+            if (MovieAdapter.showMovies.get(moviePosition).getFavorite().equals("favorite")) {
+                addFavorite();
+            }
+        }
 
         // Get the user's api key from the Shared Preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -47,24 +65,21 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         // Get the movie movieId from MovieData using the moviePosition integer for the index
         movieId = MovieAdapter.showMovies.get(moviePosition).getId();
         MovieData.reviewFilmId = movieId;
-        //new QueryAsyncTask.getOneTitleTask().execute(movieId);
+        MovieData.videoFilmId = movieId;
 
         // Call the init method passing the position number to load the correct movie details
         init(moviePosition);
 
-        // Use this toast to verify that I can set and get data to/from the database
-        //Toast.makeText(getApplicationContext(), MovieData.reviewFilmId, Toast.LENGTH_LONG).show();
-
+        //MovieData.setTestingString(MovieAdapter.showMovies.get(moviePosition).getFavorite());
+        //Toast.makeText(getApplicationContext(), MovieData.testingString, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onClick(View view){
-        Button favsButton = findViewById(R.id.btn_detail_favorites);
-        String movieId = MovieAdapter.showMovies.get(moviePosition).getId();
 
         switch (view.getId()){
             case R.id.btn_detail_trailers:
-                // Run VideosAsyncTask to query the API for the videos data
+                new VideosAsyncTask.getFilmVideos(this).execute(movieId, apiKey);
                 Intent trailersIntent = new Intent(getApplicationContext(), MovieTrailers.class);
                 startActivity(trailersIntent);
                 break;
@@ -74,28 +89,16 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
                 startActivity(reviewsIntent);
                 break;
             case R.id.btn_detail_favorites:
-
-                // Toggle favorite star icon on/off, then add data to the database
-                ImageView favStar = findViewById(R.id.iv_detail_favorites_icon);
-
                 if (isFavorite) {
-                    favStar.setImageResource(android.R.drawable.btn_star_big_off);
-                    favsButton.setText(getResources().getText(R.string.favorites));
-                    isFavorite = false;
+                    removeFavorite();
                     // Delete this film from the favorites table
+                    new FavoritesAsyncTask.removeFromFavorites(this).execute(MovieAdapter.showMovies.get(moviePosition));
                 } else {
-                    favStar.setImageResource(android.R.drawable.btn_star_big_on);
-                    favsButton.setText(getResources().getText(R.string.removeFavs));
-                    isFavorite = true;
+                    addFavorite();
                     // Add this film to the favorites table
+                    new FavoritesAsyncTask.addToFavorites(this).execute(MovieAdapter.showMovies.get(moviePosition));
                 }
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putInt("position", moviePosition);
     }
 
     protected void init(int moviePosition){
@@ -124,5 +127,27 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         rating.setRating(MovieAdapter.showMovies.get(moviePosition).getRating());
         description.setText(MovieAdapter.showMovies.get(moviePosition).getDescription());
         Picasso.with(this).load(MovieAdapter.showMovies.get(moviePosition).getBackdrop()).into(poster);
+    }
+
+    protected void addFavorite(){
+        favStar.setImageResource(android.R.drawable.btn_star_big_on);
+        favsButton.setText(getResources().getText(R.string.removeFavs));
+        isFavorite = true;
+    }
+
+    protected void removeFavorite(){
+        favStar.setImageResource(android.R.drawable.btn_star_big_off);
+        favsButton.setText(getResources().getText(R.string.favorites));
+        isFavorite = false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

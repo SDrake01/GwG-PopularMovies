@@ -18,15 +18,21 @@ public class FilmViewModel extends AndroidViewModel {
 
     private FilmRepository viewRepository;
     private LiveData<List<Film>> viewMoviesList;
+    List<Film> viewFilmsList;
 
     public FilmViewModel(@NonNull Application application) {
         super(application);
 
         viewRepository = new FilmRepository(application);
         viewMoviesList = viewRepository.repoGetMoviesList();
+        //viewFilmsList = viewRepository.repoGetFilms();
     }
 
     LiveData<List<Film>> getMoviesList(){
         return viewMoviesList;
+    }
+
+    List<Film> getFilmsList(){
+        return  viewFilmsList;
     }
 }

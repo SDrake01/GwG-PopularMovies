@@ -20,10 +20,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.stevendrake.moviehub.AsyncTasks.QueryAsyncTask;
 import com.stevendrake.moviehub.Database.Film;
 import com.stevendrake.moviehub.Database.FilmDao;
 import com.stevendrake.moviehub.Database.FilmDatabase;
 import com.stevendrake.moviehub.Database.ReviewsDao;
+import com.stevendrake.moviehub.Database.VideoDao;
 
 import org.json.JSONException;
 
@@ -41,24 +43,24 @@ public class MainActivity extends AppCompatActivity {
     // private static final int TEST_LIST_LENGTH = 20;
     // TEST_LIST_LENGTH may no longer be necessary
 
+    RecyclerView movieRecyclerView;
     public static MovieAdapter movieGridAdapter;
+    public static GridLayoutManager movieGridLayoutManager;
     private int gridNumber = 3;
+    String sortFilter;
 
-//    public FilmDatabase moviesDB = FilmDatabase.getDatabase(this);
-//    public FavoritesDao favoritesDao = moviesDB.favoritesDao;
-//    public FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
-//    public FavVideosDao favVideosDao = moviesDB.favVideosDao;
     public static FilmDao mainFilmDao;
     public static ReviewsDao mainReviewsDao;
-//    public VideoDao videoDao = moviesDB.videoDao;
+    public static VideoDao mainVideoDao;
     public FilmDatabase moviesDb;
 
     // Create a ViewModel variable
-    private FilmViewModel movieViewModel;
+    FilmViewModel movieViewModel;
+    FilmViewModel movieResumeViewModel;
 
     // Create an instance of SharedPreferences and PreferenceChangeListener
     SharedPreferences prefs;
-    private PreferenceChangeListener prefChanges = null;
+    PreferenceChangeListener prefChanges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +68,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         moviesDb = FilmDatabase.getDatabase(this);
-//        FavoritesDao favoritesDao = moviesDB.favoritesDao;
-//        FavReviewsDao favReviewsDao = moviesDB.favReviewsDao;
-//        FavVideosDao favVideosDao = moviesDB.favVideosDao;
         mainFilmDao = moviesDb.filmDao();
         mainReviewsDao = moviesDb.reviewsDao();
-//        VideoDao videoDao = moviesDB.videoDao;
+        mainVideoDao = moviesDb.videoDao();
 
         // Get the ViewModel from the view model provider
         movieViewModel = ViewModelProviders.of(this).get(FilmViewModel.class);
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         prefs.registerOnSharedPreferenceChangeListener(prefChanges);
 
         // Define the RecyclerView instance to match the layout
-        RecyclerView movieRecyclerView = findViewById(R.id.rv_movie_hub_recycler_view);
+        movieRecyclerView = findViewById(R.id.rv_movie_hub_recycler_view);
 
         // Create and assign the GridLayoutManager for the RecyclerView
         if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             gridNumber = 3;
         }
-        GridLayoutManager movieGridLayoutManager = new GridLayoutManager(this, gridNumber);
+        movieGridLayoutManager = new GridLayoutManager(this, gridNumber);
         movieRecyclerView.setLayoutManager(movieGridLayoutManager);
 
         // Set the MovieAdapter instance with the number of items
@@ -110,8 +109,9 @@ public class MainActivity extends AppCompatActivity {
         movieRecyclerView.setAdapter(movieGridAdapter);
 
         // Get the value for movie filter and the user's api key from Shared Preferences
-        String sortFilter = prefs.getString("sort_setting", "");
+        sortFilter = prefs.getString("sort_setting", "");
         String apiPref = prefs.getString("api_key_setting", "");
+        setActivityTitle(sortFilter);
 
         // Create a connectivity manager that will be used to verify an internet connection
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -121,10 +121,13 @@ public class MainActivity extends AppCompatActivity {
         boolean activeConnection = (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
 
         // Call the AsyncTask to load the movie data if the connection is active or connecting only
-        if (activeConnection) {
-            new getMovieRawJson().execute(sortFilter, apiPref);
-        } else {
-            Toast.makeText(this, "No active network connection", Toast.LENGTH_LONG).show();
+        // and if the MovieAdapter showMovies arraylist is empty
+        if (MovieAdapter.showMovies == null) {
+            if (activeConnection) {
+                new getMovieRawJson().execute(sortFilter, apiPref);
+            } else {
+                Toast.makeText(this, "No active network connection", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -133,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         prefs.registerOnSharedPreferenceChangeListener(prefChanges);
+        setActivityTitle(sortFilter);
     }
 
     // Unregister the preference change listener on destroy as good practice
@@ -140,11 +144,6 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy(){
         super.onDestroy();
         prefs.unregisterOnSharedPreferenceChangeListener(prefChanges);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
     }
 
     public class getMovieRawJson extends AsyncTask<String, Void, String> {
@@ -201,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
             // Dismiss the spinner and notify the adapter so it will refresh the recycler view
             spinner.dismiss();
             movieGridAdapter.notifyDataSetChanged();
-
         }
     }
 
@@ -234,11 +232,25 @@ public class MainActivity extends AppCompatActivity {
             if (key.equals("sort_setting")){
                 // Get the new preference value
                 SharedPreferences newPref = getDefaultSharedPreferences(MainActivity.this);
-                String pref = newPref.getString("sort_setting", "");
+                sortFilter = newPref.getString("sort_setting", "");
                 String apiPref = newPref.getString("api_key_setting", "");
                 // Run the Api query and update the recycler view with the new preference value
-                new getMovieRawJson().execute(pref, apiPref);
+                //new getMovieRawJson().execute(sortFilter, apiPref);
+                new QueryAsyncTask.getDatabaseFilms().execute(sortFilter);
             }
+        }
+    }
+
+    public void setActivityTitle(String sortValue){
+        switch (sortValue){
+            case "popular":
+                getSupportActionBar().setTitle("Most Popular Movies");
+                break;
+            case "top_rated":
+                getSupportActionBar().setTitle("Top Rated Movies");
+                break;
+            case "favorite":
+                getSupportActionBar().setTitle("My Favorite Movies");
         }
     }
 }

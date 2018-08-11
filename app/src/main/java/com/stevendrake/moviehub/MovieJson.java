@@ -6,6 +6,8 @@ import com.stevendrake.moviehub.Database.Film;
 import com.stevendrake.moviehub.Database.FilmDao;
 import com.stevendrake.moviehub.Database.Review;
 import com.stevendrake.moviehub.Database.ReviewsDao;
+import com.stevendrake.moviehub.Database.Video;
+import com.stevendrake.moviehub.Database.VideoDao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,38 +18,6 @@ import org.json.JSONObject;
  */
 
 public final class MovieJson {
-
-    public static void parseMovieJsonData(String json) throws JSONException{
-
-        // Create json object and array that hold the necessary json data
-        JSONObject outerJson = new JSONObject(json);
-        JSONArray fullArray = outerJson.getJSONArray("results");
-
-        // Create the strings that will be used to build the urls for picasso
-        String posterUrl = "https://image.tmdb.org/t/p/w185";
-        String backdropUrl = "https://image.tmdb.org/t/p/w780";
-        // Clear the MovieData arraylists before (re)populating them
-        MovieData.movieTitles.clear();
-        MovieData.movieRatings.clear();
-        MovieData.movieReleaseDates.clear();
-        MovieData.movieDescriptions.clear();
-        MovieData.movieImageUrls.clear();
-        MovieData.movieBackdropUrls.clear();
-        MovieData.movieIdNumber.clear();
-        // Iterate through the json array to build the view arrays
-        if (fullArray != null) {
-            for (int i = 0; i < fullArray.length(); i++) {
-                JSONObject titleJson = fullArray.getJSONObject(i);
-                MovieData.movieTitles.add(titleJson.getString("title"));
-                MovieData.movieRatings.add(titleJson.getLong("vote_average"));
-                MovieData.movieReleaseDates.add(titleJson.getString("release_date"));
-                MovieData.movieDescriptions.add(titleJson.getString("overview"));
-                MovieData.movieImageUrls.add(posterUrl + titleJson.getString("poster_path"));
-                MovieData.movieBackdropUrls.add(backdropUrl + titleJson.getString("backdrop_path"));
-                MovieData.movieIdNumber.add(titleJson.getString("id"));
-            }
-        }
-    }
 
     public static void parseMovieJsonToDatabase(String json, String sortBy) throws JSONException{
 
@@ -112,6 +82,28 @@ public final class MovieJson {
                 MovieData.reviewAuthors.add(eachReviewObject.getString("author"));
                 MovieData.reviewContents.add(eachReviewObject.getString("content"));
             }
+        }
+    }
+
+    public static void parseVideoJson(String vJson) throws JSONException{
+
+        Video vidBuilder = new Video();
+        VideoDao jsonVidDao = MainActivity.mainVideoDao;
+
+        // Create the json object and array that hold the videos data
+        JSONObject videosObject = new JSONObject(vJson);
+        JSONArray videosArray = videosObject.getJSONArray("results");
+
+        // Get the number of videos to use in the loop when parsing the individual videos
+        for (int i = 0; i < videosArray.length(); i++){
+            JSONObject eachVideoObject = videosArray.getJSONObject(i);
+            vidBuilder.setVideoMovieId(videosObject.getString("id"));
+            vidBuilder.setVideoId(eachVideoObject.getString("id"));
+            vidBuilder.setName(eachVideoObject.getString("name"));
+            vidBuilder.setType(eachVideoObject.getString("type"));
+            vidBuilder.setVidkey(eachVideoObject.getString("key"));
+            vidBuilder.setSite(eachVideoObject.getString("site"));
+            jsonVidDao.insertVideo(vidBuilder);
         }
     }
 }

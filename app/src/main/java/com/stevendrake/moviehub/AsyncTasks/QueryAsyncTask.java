@@ -28,12 +28,21 @@ public class QueryAsyncTask {
         }
     }
 
-    public static class getDatabaseFilms extends AsyncTask<Void, Void, List<Film>>{
+    public static class getDatabaseFilms extends AsyncTask<String, Void, List<Film>>{
 
         @Override
-        protected List<Film> doInBackground(Void... voids) {
-            List<Film> dbaseFilms = (List<Film>) MainActivity.mainFilmDao.getPopularMovies();
-            return dbaseFilms;
+        protected List<Film> doInBackground(String... params) {
+
+            String sortString = params[0];
+            switch (sortString){
+                case "popular":
+                    return MainActivity.mainFilmDao.getPopularFilms();
+                case "top_rated":
+                    return MainActivity.mainFilmDao.getTopRatedFilms();
+                case "favorite":
+                    return MainActivity.mainFilmDao.getFavoriteFilms();
+            }
+            return null;
         }
 
         protected void onPostExecute(List<Film> results){

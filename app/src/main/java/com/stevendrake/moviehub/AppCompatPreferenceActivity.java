@@ -100,4 +100,10 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         }
         return mDelegate;
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        //startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
 }

@@ -166,7 +166,9 @@ public class MoviePreferencesActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), MoviePreferencesActivity.class));
+                Intent returnIntent = new Intent(getActivity(), MainActivity.class);
+                returnIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(returnIntent);
                 return true;
             }
             return super.onOptionsItemSelected(item);

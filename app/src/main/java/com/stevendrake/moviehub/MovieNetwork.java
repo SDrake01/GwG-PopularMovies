@@ -110,4 +110,44 @@ public final class MovieNetwork {
             revUrlConnection.disconnect();
         }
     }
+
+    public static URL buildVideosUrl(String movieId, String apiKey){
+
+        // Create a string to fill in the url
+        final String VIDEOS = "videos";
+
+        // Build the reviews url using the passed in values for movie movieId number and apiKey
+        Uri reviewsUri = Uri.parse(QUERY_BASE_URL).buildUpon()
+                .appendPath(movieId)
+                .appendPath(VIDEOS)
+                .appendQueryParameter(KEY_KEY, apiKey)
+                .appendQueryParameter(KEY_LANGUAGE, QUERY_LANGUAGE)
+                .appendQueryParameter(KEY_PAGE, Integer.toString(QUERY_PAGE))
+                .build();
+
+        // Verify the built Url is valid
+        URL url = null;
+        try {
+            url = new URL(reviewsUri.toString());
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    // Take the movie reviews Url given and return the full json results from the Api
+    public static String getVidJsonFromHttpUrl(URL url) throws IOException {
+        HttpURLConnection revUrlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream inputStream = revUrlConnection.getInputStream();
+
+            Scanner scanner = new Scanner(inputStream);
+            scanner.useDelimiter("//Q//");
+
+            return scanner.next();
+        } finally {
+            revUrlConnection.disconnect();
+        }
+    }
 }

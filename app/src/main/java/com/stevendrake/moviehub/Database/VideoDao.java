@@ -1,5 +1,6 @@
 package com.stevendrake.moviehub.Database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
@@ -16,6 +17,6 @@ public interface VideoDao {
     @Insert
     void insertVideo(Video... videos);
 
-    @Query("SELECT * FROM videos_table")
-    List<Video> getAllVideos();
+    @Query("SELECT * FROM videos_table WHERE video_movie_id = :vidIdIn")
+    LiveData<List<Video>> getSelectedVideos(String vidIdIn);
 }
