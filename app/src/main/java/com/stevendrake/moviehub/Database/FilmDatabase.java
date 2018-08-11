@@ -9,11 +9,8 @@ import android.content.Context;
  * Created by calebsdrake on 7/22/2018.
  */
 
-@Database(entities = {Favorite.class, FavReview.class, FavVideo.class, Film.class, Review.class, Video.class}, version = 4)
+@Database(entities = {Favorite.class, FavReview.class, FavVideo.class, Film.class, Review.class, Video.class}, version = 5)
 public abstract class FilmDatabase extends RoomDatabase {
-    public abstract FavoritesDao favoritesDao();
-    public abstract FavReviewsDao favReviewsDao();
-    public abstract FavVideosDao favVideosDao();
     public abstract FilmDao filmDao();
     public abstract ReviewsDao reviewsDao();
     public abstract VideoDao videoDao();

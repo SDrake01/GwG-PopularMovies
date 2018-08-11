@@ -82,12 +82,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHo
         @Override
         public void onClick(View view){
             int position = getAdapterPosition();
-            //MovieData.setTestingString(showMovies.get(position).getTitle());
-            // Use this line to query the database for the movie information based on the movie id number
-            // new QueryAsyncTask.getOneTitleTask().execute(positionId);
-            // This get one title will be replaced by get one movie, then that will be passed into a model
-            // in the movie data class that I can pull from for the movie detail page, letting me get info
-            // from the database so I can filter for favorites only and not lose functionality
+
             if (position != RecyclerView.NO_POSITION){
                 Context context = view.getContext();
                 Intent detailIntent = new Intent(context, MovieDetail.class);

@@ -110,7 +110,7 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         TextView releaseDate = findViewById(R.id.tv_detail_movie_release_date);
         TextView description = findViewById(R.id.tv_detail_movie_description);
 
-        // Create the buttons and favorites star in java so they can be used and updated
+        // Create the buttons in java so they can be used and updated
         Button btnTrailers = findViewById(R.id.btn_detail_trailers);
         Button btnReviews = findViewById(R.id.btn_detail_reviews);
         Button btnFavs = findViewById(R.id.btn_detail_favorites);

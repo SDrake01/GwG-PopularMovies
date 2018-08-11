@@ -235,8 +235,10 @@ public class MainActivity extends AppCompatActivity {
                 sortFilter = newPref.getString("sort_setting", "");
                 String apiPref = newPref.getString("api_key_setting", "");
                 // Run the Api query and update the recycler view with the new preference value
-                //new getMovieRawJson().execute(sortFilter, apiPref);
-                new QueryAsyncTask.getDatabaseFilms().execute(sortFilter);
+                new getMovieRawJson().execute(sortFilter, apiPref);
+                if (MovieAdapter.showMovies == null) {
+                    new QueryAsyncTask.getDatabaseFilms().execute(sortFilter);
+                }
             }
         }
     }

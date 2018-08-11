@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.stevendrake.moviehub.Database.Video;
 
@@ -38,8 +37,5 @@ public class MovieTrailers extends AppCompatActivity {
                 videoAdapter.setVideos(videos);
             }
         });
-
-        // Use this toast for bug fixing
-        Toast.makeText(getApplicationContext(), MovieData.testingString, Toast.LENGTH_LONG).show();
     }
 }

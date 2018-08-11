@@ -1,6 +1,9 @@
 package com.stevendrake.moviehub;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +21,14 @@ import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
-    class VideoViewHolder extends RecyclerView.ViewHolder{
+    public static List<Video> showVideos;
+
+    class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView videoTitle;
         private final TextView videoSite;
         private final TextView videoType;
         private final Button videoPlay;
+        private String trailerId;
 
         public VideoViewHolder(View itemView) {
             super(itemView);
@@ -30,11 +36,30 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             videoSite = itemView.findViewById(R.id.tv_trailers_cards_site);
             videoType = itemView.findViewById(R.id.tv_trailers_cards_type);
             videoPlay = itemView.findViewById(R.id.btn_trailers_cards_play);
+            videoPlay.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            int position = getAdapterPosition();
+            trailerId = showVideos.get(position).getVidkey();
+
+            if (position != RecyclerView.NO_POSITION){
+                Context context = view.getContext();
+                Intent playTrailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(trailerId));
+                Intent webTrailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailerId));
+                try {
+                    context.startActivity(playTrailerIntent);
+                } catch (ActivityNotFoundException e){
+                    context.startActivity(webTrailerIntent);
+                }
+
+            }
         }
     }
 
     private final LayoutInflater vidInflater;
-    public static List<Video> showVideos;
 
     VideoAdapter(Context context){
         vidInflater = LayoutInflater.from(context);
@@ -54,10 +79,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             holder.videoSite.setText(current.getSite());
             holder.videoType.setText(current.getType());
         }
-//        } else {
-//            holder.videoSite.setText("No Videos");
-//            holder.videoType.setText("To Display");
-//        }
     }
 
     void setVideos(List<Video> videos){
