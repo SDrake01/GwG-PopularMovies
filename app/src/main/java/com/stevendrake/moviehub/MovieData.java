@@ -37,7 +37,7 @@ public class MovieData {
     public static void setVideoId(String video){videoFilmId = video;}
     static String getVideoId(){return videoFilmId;}
 
-    static String testingString = null;
+    private static String testingString = null;
     public static void setTestingString(String test){
         testingString = test;
     }

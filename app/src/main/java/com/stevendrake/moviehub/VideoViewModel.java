@@ -14,15 +14,14 @@ import java.util.List;
  * Created by calebsdrake on 8/6/2018.
  */
 
-public class VideoViewModel extends AndroidViewModel {
+class VideoViewModel extends AndroidViewModel {
 
-    private VideoRepository videoRepository;
     private LiveData<List<Video>> viewSelectedVideo;
 
     public VideoViewModel(@NonNull Application application) {
         super(application);
 
-        videoRepository = new VideoRepository(application);
+        VideoRepository videoRepository = new VideoRepository(application);
         viewSelectedVideo = videoRepository.getRepoSelectedVideos();
     }
 

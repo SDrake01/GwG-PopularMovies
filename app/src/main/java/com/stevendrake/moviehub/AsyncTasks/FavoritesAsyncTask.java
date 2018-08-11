@@ -21,12 +21,8 @@ public class FavoritesAsyncTask {
             this.context = context;
         }
 
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        String addFav = preferences.getString("sort_setting","");
         String addFav = "favorite";
-
         FilmDao favFilmDao = MainActivity.mainFilmDao;
-
         private Film addFavFilm;
         private Film favFilmBuilder = new Film();
 
@@ -45,8 +41,7 @@ public class FavoritesAsyncTask {
             favFilmBuilder.setSort(addFavFilm.getSort());
             favFilmBuilder.setFavorite(addFav);
             favFilmDao.updateOneFilm(favFilmBuilder);
-            String returnFilmTitle = addFavFilm.getTitle();
-            return returnFilmTitle;
+            return addFavFilm.getTitle();
         }
 
         @Override
@@ -82,8 +77,7 @@ public class FavoritesAsyncTask {
             favFilmBuilder.setSort(removeFavFilm.getSort());
             favFilmBuilder.setFavorite(removeFav);
             favFilmDao.updateOneFilm(favFilmBuilder);
-            String returnFilmTitle = removeFavFilm.getTitle();
-            return returnFilmTitle;
+            return favFilmBuilder.getTitle();
         }
 
         @Override

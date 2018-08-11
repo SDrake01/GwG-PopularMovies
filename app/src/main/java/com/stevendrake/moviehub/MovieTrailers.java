@@ -18,8 +18,6 @@ import java.util.List;
 
 public class MovieTrailers extends AppCompatActivity {
 
-    private VideoViewModel videoViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +28,7 @@ public class MovieTrailers extends AppCompatActivity {
         videosRecyclerView.setAdapter(videoAdapter);
         videosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        videoViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
+        VideoViewModel videoViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
         videoViewModel.getViewSelectedVideo().observe(this, new Observer<List<Video>>() {
             @Override
             public void onChanged(@Nullable final List<Video> videos) {

@@ -18,8 +18,6 @@ import java.util.List;
 
 public class MovieReviews extends AppCompatActivity {
 
-    private ReviewViewModel reviewViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +28,7 @@ public class MovieReviews extends AppCompatActivity {
         reviewsRecyclerView.setAdapter(reviewsAdapter);
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+        ReviewViewModel reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         reviewViewModel.getViewSelectedReview().observe(this, new Observer<List<Review>>() {
             @Override
             public void onChanged(@Nullable final List<Review> reviews){

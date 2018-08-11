@@ -9,7 +9,7 @@ import android.content.Context;
  * Created by calebsdrake on 7/22/2018.
  */
 
-@Database(entities = {Favorite.class, FavReview.class, FavVideo.class, Film.class, Review.class, Video.class}, version = 5)
+@Database(entities = {Film.class, Review.class, Video.class}, version = 6)
 public abstract class FilmDatabase extends RoomDatabase {
     public abstract FilmDao filmDao();
     public abstract ReviewsDao reviewsDao();

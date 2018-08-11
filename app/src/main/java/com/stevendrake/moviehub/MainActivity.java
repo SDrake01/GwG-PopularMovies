@@ -43,24 +43,22 @@ public class MainActivity extends AppCompatActivity {
     // private static final int TEST_LIST_LENGTH = 20;
     // TEST_LIST_LENGTH may no longer be necessary
 
-    RecyclerView movieRecyclerView;
+    private RecyclerView movieRecyclerView;
     public static MovieAdapter movieGridAdapter;
-    public static GridLayoutManager movieGridLayoutManager;
-    private int gridNumber = 3;
-    String sortFilter;
+    private static GridLayoutManager movieGridLayoutManager;
+    private String sortFilter;
 
     public static FilmDao mainFilmDao;
     public static ReviewsDao mainReviewsDao;
     public static VideoDao mainVideoDao;
-    public FilmDatabase moviesDb;
+    private FilmDatabase moviesDb;
 
     // Create a ViewModel variable
-    FilmViewModel movieViewModel;
-    FilmViewModel movieResumeViewModel;
+    private FilmViewModel movieViewModel;
 
     // Create an instance of SharedPreferences and PreferenceChangeListener
-    SharedPreferences prefs;
-    PreferenceChangeListener prefChanges;
+    private SharedPreferences prefs;
+    private PreferenceChangeListener prefChanges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         movieRecyclerView = findViewById(R.id.rv_movie_hub_recycler_view);
 
         // Create and assign the GridLayoutManager for the RecyclerView
+        int gridNumber = 3;
         if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
             gridNumber = 5;
         } else {
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setActivityTitle(String sortValue){
+    private void setActivityTitle(String sortValue){
         switch (sortValue){
             case "popular":
                 getSupportActionBar().setTitle("Most Popular Movies");

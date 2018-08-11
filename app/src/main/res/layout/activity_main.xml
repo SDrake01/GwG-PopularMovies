@@ -5,7 +5,6 @@
     android:id="@+id/cl_movie_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     tools:context="com.stevendrake.moviehub.MainActivity">
 
     <android.support.v7.widget.RecyclerView

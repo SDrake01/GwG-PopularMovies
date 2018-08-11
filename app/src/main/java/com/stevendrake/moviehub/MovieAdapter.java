@@ -20,13 +20,11 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PosterViewHolder> {
 
-    //private final int movieCount;
-    private final LayoutInflater inflater;
     // Cached copy of ArrayList<Film> used to populate the UI
     public static List<Film> showMovies;
 
     public MovieAdapter(Context context){
-        inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
     }
 
     @Override

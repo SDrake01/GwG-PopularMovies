@@ -15,28 +15,20 @@ import java.util.List;
 
 public class FilmRepository {
 
-    private FilmDao repoFilmDao;
     private LiveData<List<Film>> repoPopularMovies;
     private LiveData<List<Film>> repoTopRatedMovies;
     private LiveData<List<Film>> repoFavoriteMovies;
-//    private List<Film> repoPopularFilms;
-//    private List<Film> repoTopRatedFilms;
-//    private List<Film> repoFavoriteFilms;
-    private SharedPreferences preferences;
-    String movieFilter;
+    private String movieFilter;
 
     public FilmRepository(Application application){
-        preferences = PreferenceManager.getDefaultSharedPreferences(application);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
         movieFilter = preferences.getString("sort_setting", "");
         MovieData.setTestingString(movieFilter);
         FilmDatabase repoDb = FilmDatabase.getDatabase(application);
-        repoFilmDao = repoDb.filmDao();
+        FilmDao repoFilmDao = repoDb.filmDao();
         repoPopularMovies = repoFilmDao.getPopularMovies();
         repoTopRatedMovies = repoFilmDao.getTopRatedMovies();
         repoFavoriteMovies = repoFilmDao.getFavoriteMovies();
-//        repoPopularFilms = repoFilmDao.getPopularFilms();
-//        repoTopRatedFilms = repoFilmDao.getTopRatedFilms();
-//        repoFavoriteFilms = repoFilmDao.getFavoriteFilms();
     }
 
     public LiveData<List<Film>> repoGetMoviesList(){
@@ -50,16 +42,4 @@ public class FilmRepository {
             return repoPopularMovies;
         }
     }
-
-//    public List<Film> repoGetFilms(){
-//        switch (movieFilter){
-//            case "popular":
-//                return repoPopularFilms;
-//            case "top_rated":
-//                return repoTopRatedFilms;
-//            case "favorite":
-//                return repoFavoriteFilms;
-//        }
-//        return null;
-//    }
 }

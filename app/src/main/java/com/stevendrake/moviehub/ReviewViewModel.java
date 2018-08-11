@@ -14,15 +14,14 @@ import java.util.List;
  * Created by calebsdrake on 7/31/2018.
  */
 
-public class ReviewViewModel extends AndroidViewModel {
+class ReviewViewModel extends AndroidViewModel {
 
-    private ReviewRepository viewReviewRepository;
     private LiveData<List<Review>> viewSelectedReview;
 
     public ReviewViewModel(@NonNull Application application) {
         super(application);
 
-        viewReviewRepository = new ReviewRepository(application);
+        ReviewRepository viewReviewRepository = new ReviewRepository(application);
         viewSelectedReview = viewReviewRepository.getRepoSelectedReviews();
     }
 

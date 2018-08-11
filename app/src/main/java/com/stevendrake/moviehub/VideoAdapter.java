@@ -21,7 +21,7 @@ import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
-    public static List<Video> showVideos;
+    private static List<Video> showVideos;
 
     class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView videoTitle;

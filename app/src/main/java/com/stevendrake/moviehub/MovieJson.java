@@ -1,7 +1,5 @@
 package com.stevendrake.moviehub;
 
-import android.content.Context;
-
 import com.stevendrake.moviehub.Database.Film;
 import com.stevendrake.moviehub.Database.FilmDao;
 import com.stevendrake.moviehub.Database.Review;
@@ -22,7 +20,6 @@ public final class MovieJson {
     public static void parseMovieJsonToDatabase(String json, String sortBy) throws JSONException{
 
         FilmDao jsonFilmDao = MainActivity.mainFilmDao;
-        Context context = null;
 
         // Create json object and array that hold the json datak
         JSONObject outerJson = new JSONObject(json);

@@ -2,7 +2,6 @@ package com.stevendrake.moviehub.Database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -20,14 +19,8 @@ public interface FilmDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertFilm(Film... films);
 
-    @Delete
-    void deleteOneFilm(Film film);
-
     @Update
     void updateOneFilm(Film film);
-
-    @Query("DELETE FROM film_table")
-    public void deleteAllFilms();
 
     @Query("SELECT * FROM film_table WHERE sort = 'popular' ORDER BY popularity DESC")
     LiveData<List<Film>> getPopularMovies();

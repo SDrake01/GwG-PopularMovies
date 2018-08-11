@@ -13,14 +13,12 @@ import java.util.List;
 
 public class VideoRepository {
 
-    private VideoDao repoVideoDao;
     private LiveData<List<Video>> repoSelectedVideos;
-    String requestId;
 
     public VideoRepository(Application application){
-        requestId = MovieData.videoFilmId;
+        String requestId = MovieData.videoFilmId;
         FilmDatabase videosRepoDb = FilmDatabase.getDatabase(application);
-        repoVideoDao = videosRepoDb.videoDao();
+        VideoDao repoVideoDao = videosRepoDb.videoDao();
         repoSelectedVideos = repoVideoDao.getSelectedVideos(requestId);
     }
 

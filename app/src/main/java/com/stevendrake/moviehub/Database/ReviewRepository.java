@@ -13,14 +13,12 @@ import java.util.List;
 
 public class ReviewRepository {
 
-    private ReviewsDao repoReviewsDao;
     private LiveData<List<Review>> repoSelectedReviews;
-    String requestId;
 
     public ReviewRepository(Application application){
-        requestId = MovieData.reviewFilmId;
+        String requestId = MovieData.reviewFilmId;
         FilmDatabase reviewsRepoDb = FilmDatabase.getDatabase(application);
-        repoReviewsDao = reviewsRepoDb.reviewsDao();
+        ReviewsDao repoReviewsDao = reviewsRepoDb.reviewsDao();
         repoSelectedReviews = repoReviewsDao.getSelectedReviews(requestId);
     }
 

@@ -31,7 +31,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getDelegate().onPostCreate(savedInstanceState);
     }
 
-    public ActionBar getSupportActionBar() {
+    ActionBar getSupportActionBar() {
         return getDelegate().getSupportActionBar();
     }
 
@@ -99,11 +99,5 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
             mDelegate = AppCompatDelegate.create(this, null);
         }
         return mDelegate;
-    }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        //startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 }

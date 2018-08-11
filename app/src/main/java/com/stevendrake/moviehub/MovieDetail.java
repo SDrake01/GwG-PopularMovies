@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso;
 import com.stevendrake.moviehub.AsyncTasks.FavoritesAsyncTask;
 import com.stevendrake.moviehub.AsyncTasks.ReviewsAsyncTask;
 import com.stevendrake.moviehub.AsyncTasks.VideosAsyncTask;
-import com.stevendrake.moviehub.Database.ReviewsDao;
 
 /**
  * Created by calebsdrake on 5/14/2018.
@@ -24,19 +23,17 @@ import com.stevendrake.moviehub.Database.ReviewsDao;
 
 public class MovieDetail extends AppCompatActivity implements View.OnClickListener {
 
-    Boolean isFavorite = false;
-    int moviePosition;
-    String apiKey;
-    String movieId;
-    String movieSort;
-    ImageView favStar;
-    Button favsButton;
-    ReviewsDao detailReviewsDao = MainActivity.mainReviewsDao;
+    private Boolean isFavorite = false;
+    private int moviePosition;
+    private String apiKey;
+    private String movieId;
+    private ImageView favStar;
+    private Button favsButton;
 
     // Create an instance of Shared Preferences to save the api key
     // to pass into the methods that query the movie database and return
     // reviews and trailers
-    SharedPreferences preferences = null;
+    private SharedPreferences preferences = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -69,9 +66,6 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
 
         // Call the init method passing the position number to load the correct movie details
         init(moviePosition);
-
-        //MovieData.setTestingString(MovieAdapter.showMovies.get(moviePosition).getFavorite());
-        //Toast.makeText(getApplicationContext(), MovieData.testingString, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -101,7 +95,7 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    protected void init(int moviePosition){
+    private void init(int moviePosition){
 
         // Create the view elements in java so they can be updated with movie data
         ImageView poster = findViewById(R.id.iv_detail_movie_image);
@@ -129,13 +123,13 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         Picasso.with(this).load(MovieAdapter.showMovies.get(moviePosition).getBackdrop()).into(poster);
     }
 
-    protected void addFavorite(){
+    private void addFavorite(){
         favStar.setImageResource(android.R.drawable.btn_star_big_on);
         favsButton.setText(getResources().getText(R.string.removeFavs));
         isFavorite = true;
     }
 
-    protected void removeFavorite(){
+    private void removeFavorite(){
         favStar.setImageResource(android.R.drawable.btn_star_big_off);
         favsButton.setText(getResources().getText(R.string.favorites));
         isFavorite = false;

@@ -29,7 +29,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     }
 
     private final LayoutInflater revInflater;
-    public static List<Review> showReviews;
+    private static List<Review> showReviews;
 
     ReviewsAdapter(Context context){
         revInflater = LayoutInflater.from(context);

@@ -18,12 +18,6 @@ public interface ReviewsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertReview(Review... reviews);
 
-    @Query("SELECT * FROM reviews_table")
-    LiveData<List<Review>> getAllReviews();
-
     @Query("SELECT * FROM reviews_table WHERE review_movie_id = :idIn")
     LiveData<List<Review>> getSelectedReviews(String idIn);
-
-    @Query("DELETE FROM reviews_table")
-    void deleteAllReviews();
 }

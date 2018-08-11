@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import com.stevendrake.moviehub.Database.Film;
 import com.stevendrake.moviehub.MainActivity;
-import com.stevendrake.moviehub.MovieData;
 
 import java.util.List;
 
@@ -13,20 +12,6 @@ import java.util.List;
  */
 
 public class QueryAsyncTask {
-
-    public static class getOneTitleTask extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            String selectedTitle = MainActivity.mainFilmDao.getOneFilmTitle(strings[0]);
-            return selectedTitle;
-        }
-
-        protected void onPostExecute(String results){
-            MovieData.setTestingString(results);
-        }
-    }
 
     public static class getDatabaseFilms extends AsyncTask<String, Void, List<Film>>{
 
