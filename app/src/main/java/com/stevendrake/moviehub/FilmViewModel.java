@@ -14,7 +14,7 @@ import java.util.List;
  * Created by calebsdrake on 7/26/2018.
  */
 
-class FilmViewModel extends AndroidViewModel {
+public class FilmViewModel extends AndroidViewModel {
 
     private LiveData<List<Film>> viewMoviesList;
 
