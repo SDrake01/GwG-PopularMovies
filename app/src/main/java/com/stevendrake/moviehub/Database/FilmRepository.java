@@ -5,7 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.stevendrake.moviehub.MovieData;
+import com.stevendrake.moviehub.MovieDetail;
 
 import java.util.List;
 
@@ -18,17 +18,20 @@ public class FilmRepository {
     private LiveData<List<Film>> repoPopularMovies;
     private LiveData<List<Film>> repoTopRatedMovies;
     private LiveData<List<Film>> repoFavoriteMovies;
+    private LiveData<Film> repoSelectOneMovie;
     private String movieFilter;
+    private String movieSelectId;
 
     public FilmRepository(Application application){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
         movieFilter = preferences.getString("sort_setting", "");
-        MovieData.setTestingString(movieFilter);
+        movieSelectId = MovieDetail.movieId;
         FilmDatabase repoDb = FilmDatabase.getDatabase(application);
         FilmDao repoFilmDao = repoDb.filmDao();
         repoPopularMovies = repoFilmDao.getPopularMovies();
         repoTopRatedMovies = repoFilmDao.getTopRatedMovies();
         repoFavoriteMovies = repoFilmDao.getFavoriteMovies();
+        repoSelectOneMovie = repoFilmDao.getOneMovie(movieSelectId);
     }
 
     public LiveData<List<Film>> repoGetMoviesList(){
@@ -41,5 +44,9 @@ public class FilmRepository {
         }else {
             return repoPopularMovies;
         }
+    }
+
+    public LiveData<Film> repoGetOneMovie(){
+        return repoSelectOneMovie;
     }
 }

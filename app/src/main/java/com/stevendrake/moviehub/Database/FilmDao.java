@@ -31,6 +31,9 @@ public interface FilmDao {
     @Query("SELECT * FROM film_table WHERE favorite = 'favorite' ORDER BY title ASC")
     LiveData<List<Film>> getFavoriteMovies();
 
+    @Query("SELECT * FROM film_table WHERE id = :selectId")
+    LiveData<Film> getOneMovie(String selectId);
+
     @Query("SELECT * FROM film_table WHERE sort = 'popular' ORDER BY popularity DESC")
     List<Film> getPopularFilms();
 

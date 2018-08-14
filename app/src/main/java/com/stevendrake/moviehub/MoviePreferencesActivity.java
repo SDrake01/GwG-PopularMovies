@@ -201,4 +201,11 @@ public class MoviePreferencesActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed(){
+        Intent returnIntent = new Intent(getApplication(), MainActivity.class);
+        returnIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(returnIntent);
+    }
 }

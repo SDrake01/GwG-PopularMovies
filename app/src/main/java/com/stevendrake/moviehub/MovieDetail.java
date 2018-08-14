@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import com.stevendrake.moviehub.AsyncTasks.FavoritesAsyncTask;
 import com.stevendrake.moviehub.AsyncTasks.ReviewsAsyncTask;
 import com.stevendrake.moviehub.AsyncTasks.VideosAsyncTask;
+import com.stevendrake.moviehub.Database.Film;
 
 /**
  * Created by calebsdrake on 5/14/2018.
@@ -26,9 +28,10 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
     private Boolean isFavorite = false;
     private int moviePosition;
     private String apiKey;
-    private String movieId;
+    public static String movieId;
     private ImageView favStar;
     private Button favsButton;
+    Film detailFilm;
 
     // Create an instance of Shared Preferences to save the api key
     // to pass into the methods that query the movie database and return
@@ -47,11 +50,12 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         // Get the grid position number from the main activity so it can be sent to
         // the init() method to load the page
         moviePosition = getIntent().getIntExtra("movieNumber", 0);
+        detailFilm = MovieAdapter.showMovies.get(moviePosition);
 
         // Update the 'isFavorite' boolean if this movie is marked as a favorite
         // and the 'favorite' field is not null
-        if (MovieAdapter.showMovies.get(moviePosition).getFavorite() != null) {
-            if (MovieAdapter.showMovies.get(moviePosition).getFavorite().equals("favorite")) {
+        if (detailFilm.getFavorite() != null) {
+            if (detailFilm.getFavorite().equals("favorite")) {
                 addFavorite();
             }
         }
@@ -60,7 +64,7 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         apiKey = preferences.getString("api_key_setting","");
         // Get the movie movieId from MovieData using the moviePosition integer for the index
-        movieId = MovieAdapter.showMovies.get(moviePosition).getId();
+        movieId = detailFilm.getId();
         MovieData.reviewFilmId = movieId;
         MovieData.videoFilmId = movieId;
 
@@ -85,11 +89,11 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
             case R.id.btn_detail_favorites:
                 if (isFavorite) {
                     removeFavorite();
-                    // Delete this film from the favorites table
+                    // Delete this film from the favorites table and update the detailFilm object
                     new FavoritesAsyncTask.removeFromFavorites(this).execute(MovieAdapter.showMovies.get(moviePosition));
                 } else {
                     addFavorite();
-                    // Add this film to the favorites table
+                    // Add this film to the favorites table and update the detailFilm object
                     new FavoritesAsyncTask.addToFavorites(this).execute(MovieAdapter.showMovies.get(moviePosition));
                 }
         }
@@ -99,10 +103,10 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
 
         // Create the view elements in java so they can be updated with movie data
         ImageView poster = findViewById(R.id.iv_detail_movie_image);
-        TextView title = findViewById(R.id.tv_detail_movie_title);
         RatingBar rating = findViewById(R.id.rat_detail_movie_rating);
         TextView releaseDate = findViewById(R.id.tv_detail_movie_release_date);
         TextView description = findViewById(R.id.tv_detail_movie_description);
+        description.setMovementMethod(new ScrollingMovementMethod());
 
         // Create the buttons in java so they can be used and updated
         Button btnTrailers = findViewById(R.id.btn_detail_trailers);
@@ -115,24 +119,26 @@ public class MovieDetail extends AppCompatActivity implements View.OnClickListen
 
         // Get and display the data from the MovieAdapter cached data using the passed in position number
         // to reference the index of the cached arraylist
-        title.setText(MovieAdapter.showMovies.get(moviePosition).getTitle());
         releaseDate.setText(String.format(getResources().getString(R.string.release_date),
-                MovieAdapter.showMovies.get(moviePosition).getReleased()));
-        rating.setRating(MovieAdapter.showMovies.get(moviePosition).getRating());
-        description.setText(MovieAdapter.showMovies.get(moviePosition).getDescription());
-        Picasso.with(this).load(MovieAdapter.showMovies.get(moviePosition).getBackdrop()).into(poster);
+                detailFilm.getReleased()));
+        rating.setRating(detailFilm.getRating());
+        description.setText(detailFilm.getDescription());
+        Picasso.with(this).load(MovieAdapter.showMovies.get(moviePosition).getPoster()).into(poster);
+        getSupportActionBar().setTitle(detailFilm.getTitle());
     }
 
     private void addFavorite(){
         favStar.setImageResource(android.R.drawable.btn_star_big_on);
         favsButton.setText(getResources().getText(R.string.removeFavs));
         isFavorite = true;
+        detailFilm.setFavorite("favorite");
     }
 
     private void removeFavorite(){
         favStar.setImageResource(android.R.drawable.btn_star_big_off);
         favsButton.setText(getResources().getText(R.string.favorites));
         isFavorite = false;
+        detailFilm.setFavorite("");
     }
 
     @Override

@@ -2,16 +2,10 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail_layout_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.constraint.Guideline
-        android:id="@+id/landscape_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.6" />
 
     <ImageView
         android:id="@+id/iv_detail_movie_image"
@@ -19,8 +13,8 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:background="@color/ic_launcher_background"
-        app:layout_constraintDimensionRatio="H,16:9"
-        app:layout_constraintEnd_toStartOf="@id/landscape_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="W,1:1.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/movie_hub_logo_full" />
@@ -31,38 +25,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:isIndicator="true"
         android:numStars="10"
         android:stepSize="0.1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/landscape_guideline"
+        app:layout_constraintStart_toEndOf="@+id/iv_detail_movie_image"
         app:layout_constraintTop_toBottomOf="@+id/tv_detail_movie_release_date" />
-
-    <TextView
-        android:id="@+id/tv_detail_movie_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:gravity="center_horizontal"
-        android:padding="8dp"
-        android:text="Movie Title"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/landscape_guideline"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_detail_movie_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:gravity="center_horizontal"
         android:text="Movie description with multiple lines and all that fancy stuff"
         android:textAlignment="center"
+        android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/landscape_guideline"
+        app:layout_constraintStart_toEndOf="@+id/iv_detail_movie_image"
         app:layout_constraintTop_toBottomOf="@+id/rat_detail_movie_rating" />
 
     <TextView
@@ -70,32 +52,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/release_date"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/landscape_guideline"
+        app:layout_constraintStart_toEndOf="@+id/iv_detail_movie_image"
         app:layout_constraintTop_toBottomOf="@+id/btn_detail_reviews" />
 
     <ImageView
         android:id="@+id/iv_detail_favorites_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_detail_movie_title"
-        app:layout_constraintEnd_toEndOf="@+id/tv_detail_movie_title"
-        app:layout_constraintTop_toTopOf="@+id/tv_detail_movie_title"
+        app:layout_constraintEnd_toEndOf="@+id/iv_detail_movie_image"
+        app:layout_constraintTop_toTopOf="@+id/iv_detail_movie_image"
         app:srcCompat="@android:drawable/btn_star_big_off" />
-
-    <Button
-        android:id="@+id/btn_detail_favorites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/favorites"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_detail_trailers"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detail_movie_title" />
 
     <Button
         android:id="@+id/btn_detail_reviews"
@@ -104,8 +75,8 @@
         android:text="@string/reviews"
         app:layout_constraintEnd_toStartOf="@+id/btn_detail_trailers"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/landscape_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detail_movie_title" />
+        app:layout_constraintStart_toEndOf="@+id/iv_detail_movie_image"
+        app:layout_constraintTop_toBottomOf="@+id/iv_detail_favorites_icon" />
 
     <Button
         android:id="@+id/btn_detail_trailers"
@@ -115,6 +86,16 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_detail_favorites"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_detail_reviews"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detail_movie_title" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_detail_favorites_icon" />
+
+    <Button
+        android:id="@+id/btn_detail_favorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favorites"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_detail_trailers"
+        app:layout_constraintTop_toBottomOf="@+id/iv_detail_favorites_icon" />
 
 </android.support.constraint.ConstraintLayout>
